@@ -156,7 +156,9 @@ All access is enforced **in the database** via Row-Level Security, not just the 
 (client checks are bypassable). The UI mirrors the rules only for UX.
 
 - Three roles per trip, stored on `trip_members.role`: `host`, `editor`, `viewer`.
-- SQL helper functions established now:
+- SQL helper functions (created in #1, alongside `trip_members`, since they read
+  from it — a Postgres function can't reference a table that doesn't exist yet; the
+  *strategy* below is established now and `profiles` RLS is built in #0):
   - `is_trip_member(trip_id)` — is the caller an accepted member of this trip?
   - `trip_role(trip_id)` — the caller's role for this trip.
 - Policy pattern applied to every trip-scoped table (written with each subsystem):
