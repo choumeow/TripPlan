@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './auth/AuthContext'
 import { ProtectedRoute } from './auth/ProtectedRoute'
 import { RequireOnboarded } from './auth/RequireOnboarded'
+import { AppLayout } from './components/AppLayout'
 import { Login } from './pages/Login'
 import { Onboarding } from './pages/Onboarding'
 import { Dashboard } from './pages/Dashboard'
@@ -15,11 +16,13 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/onboarding" element={<Onboarding />} />
-              <Route element={<RequireOnboarded />}>
-                <Route path="/" element={<Dashboard />} />
+            <Route element={<AppLayout />}>
+              <Route path="/login" element={<Login />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/onboarding" element={<Onboarding />} />
+                <Route element={<RequireOnboarded />}>
+                  <Route path="/" element={<Dashboard />} />
+                </Route>
               </Route>
             </Route>
           </Routes>

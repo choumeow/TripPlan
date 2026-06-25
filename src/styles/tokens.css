@@ -1,0 +1,57 @@
+/* TripPlan design tokens — "boarding pass" identity.
+   Palette: sky & sunset (travel), WCAG-checked contrast. Light theme. */
+:root {
+  /* --- Raw palette --- */
+  --c-sky: #0ea5e9; /* primary */
+  --c-sky-600: #0284c7;
+  --c-sky-100: #bae6fd; /* horizon: borders, route line */
+  --c-deep-sea: #0c4a6e; /* ink: headings, body */
+  --c-sunset: #ea580c; /* accent: CTA */
+  --c-sunset-600: #c2410c;
+  --c-mist: #f0f9ff; /* app background */
+  --c-cloud: #ffffff; /* card surface */
+  --c-slate: #64748b; /* muted text */
+  --c-line: #e2e8f0; /* hairline */
+  --c-danger: #dc2626;
+
+  /* --- Semantic --- */
+  --bg: var(--c-mist);
+  --surface: var(--c-cloud);
+  --ink: var(--c-deep-sea);
+  --ink-muted: var(--c-slate);
+  --primary: var(--c-sky);
+  --primary-strong: var(--c-sky-600);
+  --accent: var(--c-sunset);
+  --accent-strong: var(--c-sunset-600);
+  --border: var(--c-sky-100);
+  --ring: var(--c-sky);
+
+  /* --- Typography --- */
+  --font-display: 'Sora Variable', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, 'Cascadia Code', monospace;
+
+  /* --- Spacing (4px base) --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* --- Radius --- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  /* --- Elevation (soft, sky-tinted) --- */
+  --shadow-sm: 0 1px 2px rgba(12, 74, 110, 0.06);
+  --shadow-md: 0 10px 30px -12px rgba(12, 74, 110, 0.25);
+  --shadow-lg: 0 30px 60px -20px rgba(12, 74, 110, 0.3);
+
+  /* --- Motion --- */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur: 220ms;
+}
