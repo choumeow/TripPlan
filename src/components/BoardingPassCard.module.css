@@ -1,0 +1,88 @@
+.pass {
+  --pad: var(--space-6);
+  position: relative;
+  padding: var(--pad);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-5);
+  border-bottom: 2px dashed var(--border);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--primary-strong);
+  background: var(--c-mist);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* Full-bleed perforation with ticket notches punched at each edge. */
+.perforation {
+  position: relative;
+  margin: var(--space-5) calc(-1 * var(--pad)) var(--space-4);
+  border-top: 2px dashed var(--border);
+}
+
+.perforation::before,
+.perforation::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg);
+  transform: translateY(-50%);
+}
+
+.perforation::before {
+  left: -10px;
+}
+
+.perforation::after {
+  right: -10px;
+}
+
+/* Origin → destination route stub. */
+.stub {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.line {
+  flex: 1;
+  border-top: 2px dotted var(--border);
+}
+
+.pin {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+}

@@ -1,0 +1,46 @@
+.plane {
+  color: var(--primary);
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: var(--space-2);
+}
+
+.sub {
+  color: var(--ink-muted);
+  margin-bottom: var(--space-5);
+}
+
+.google {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.google:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.google:active {
+  transform: translateY(0);
+}
+
+.gicon {
+  flex: none;
+}
