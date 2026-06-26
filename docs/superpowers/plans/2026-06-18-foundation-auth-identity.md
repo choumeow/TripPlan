@@ -173,11 +173,20 @@ create policy "profiles_update_own"
   on public.profiles for update
   using (auth.uid() = id)
   with check (auth.uid() = id);
+
+-- Table-level privileges for the authenticated role. RLS only filters ROWS;
+-- without this GRANT, every authenticated query is denied 403 ("permission
+-- denied for table profiles") BEFORE RLS is evaluated. Tables created via raw
+-- SQL (vs the Table Editor UI) are not auto-granted, so this is required.
+grant select, update on public.profiles to authenticated;
 ```
 
-> No INSERT policy is needed for users: the trigger runs as `security definer`, so it
-> bypasses RLS. (Subsystem #1 will broaden `profiles_select_own` so members of a shared
-> trip can read each other's display names.)
+> No INSERT grant/policy is needed for users: the trigger runs as `security definer`,
+> so it bypasses RLS and table grants. (Subsystem #1 will broaden `profiles_select_own`
+> so members of a shared trip can read each other's display names.)
+>
+> **Every future table created via raw SQL needs its own `grant` to `authenticated`**
+> for the same reason.
 
 - [ ] **Step 2: Verify the table and policies exist**
 
