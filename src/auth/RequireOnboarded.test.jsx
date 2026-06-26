@@ -39,4 +39,19 @@ describe('RequireOnboarded', () => {
     renderApp()
     expect(screen.getByText('App Home')).toBeInTheDocument()
   })
+
+  it('shows a recoverable error (not the app) when the profile fails to load', () => {
+    useProfile.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: true,
+      refetch: vi.fn(),
+    })
+    renderApp()
+    expect(screen.getByRole('alert')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /try again/i }),
+    ).toBeInTheDocument()
+    expect(screen.queryByText('App Home')).not.toBeInTheDocument()
+  })
 })
