@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../auth/AuthContext'
@@ -8,20 +8,21 @@ import { BoardingPassCard } from '../components/BoardingPassCard'
 import { PlaneIcon } from '../components/PlaneIcon'
 import styles from './Onboarding.module.css'
 
+// Gate the async profile load here so the form below mounts once with its
+// initial name — no effect needed to sync state to loaded data.
 export function Onboarding() {
-  const { user } = useAuth()
   const { data: profile, isLoading } = useProfile()
-  const [name, setName] = useState('')
+  if (isLoading) return <div className={styles.loading}>Loading…</div>
+  if (profile?.onboarded) return <Navigate to="/" replace />
+  return <OnboardingForm initialName={profile?.display_name ?? ''} />
+}
+
+function OnboardingForm({ initialName }) {
+  const { user } = useAuth()
+  const [name, setName] = useState(initialName)
   const [saving, setSaving] = useState(false)
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-
-  useEffect(() => {
-    if (profile?.display_name) setName(profile.display_name)
-  }, [profile?.display_name])
-
-  if (isLoading) return <div className={styles.loading}>Loading…</div>
-  if (profile?.onboarded) return <Navigate to="/" replace />
 
   async function handleSubmit(event) {
     event.preventDefault()

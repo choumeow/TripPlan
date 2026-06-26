@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { supabase } from '../lib/supabaseClient'
 
 const AuthContext = createContext(null)
@@ -18,21 +25,31 @@ export function AuthProvider({ children }) {
     return () => data.subscription.unsubscribe()
   }, [])
 
-  const value = {
-    session,
-    user: session?.user ?? null,
-    loading,
-    signInWithGoogle: () =>
+  const signInWithGoogle = useCallback(
+    () =>
       supabase.auth.signInWithOAuth({
         provider: 'google',
         options: { redirectTo: window.location.origin },
       }),
-    signOut: () => supabase.auth.signOut(),
-  }
+    [],
+  )
+  const signOut = useCallback(() => supabase.auth.signOut(), [])
+
+  const value = useMemo(
+    () => ({
+      session,
+      user: session?.user ?? null,
+      loading,
+      signInWithGoogle,
+      signOut,
+    }),
+    [session, loading, signInWithGoogle, signOut],
+  )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- hook intentionally co-located with its provider
 export function useAuth() {
   const ctx = useContext(AuthContext)
   if (ctx === null) {
