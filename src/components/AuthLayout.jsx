@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom'
-import styles from './AppLayout.module.css'
+import styles from './AuthLayout.module.css'
 
 /**
- * Shared shell for every page: an ambient sky→mist wash with a faint dashed
- * route line (origin → destination pins) behind a centered content slot.
- * Pages render into <Outlet/>.
+ * Shell for the auth pages (Login, Onboarding): an ambient sky→mist wash with
+ * a faint dashed route line (origin → destination pins) behind a centered
+ * boarding-pass slot. Pages render into <Outlet/>.
  */
-export function AppLayout() {
+export function AuthLayout() {
   return (
     <div className={styles.layout}>
       <svg

@@ -1,20 +1,13 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
-vi.mock('../auth/AuthContext', () => ({ useAuth: vi.fn() }))
-import { useAuth } from '../auth/AuthContext'
 import { Dashboard } from './Dashboard'
 
-beforeEach(() => vi.clearAllMocks())
-
 describe('Dashboard', () => {
-  it('renders a heading and a sign-out button', async () => {
-    const signOut = vi.fn()
-    useAuth.mockReturnValue({ signOut })
+  it('renders the trips heading and an empty state', () => {
     render(<Dashboard />)
-    expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: /sign out/i }))
-    expect(signOut).toHaveBeenCalledOnce()
+    expect(
+      screen.getByRole('heading', { name: /your trips/i }),
+    ).toBeInTheDocument()
+    expect(screen.getByText(/no trips yet/i)).toBeInTheDocument()
   })
 })

@@ -1,0 +1,96 @@
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.title {
+  font-size: 30px;
+}
+
+.sub {
+  margin-top: var(--space-1);
+  color: var(--ink-muted);
+}
+
+.newTrip {
+  flex: none;
+  padding: var(--space-3) var(--space-5);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition:
+    background-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.newTrip:hover {
+  background: var(--accent-strong);
+  transform: translateY(-1px);
+}
+
+.newTrip:active {
+  transform: translateY(0);
+}
+
+/* Empty state — a boarding-pass-flavored dashed card. */
+.empty {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-5);
+  background: var(--surface);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.emptyBadge {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: var(--space-2);
+  color: var(--primary);
+  background: var(--c-mist);
+  border-radius: 50%;
+}
+
+.emptyPlane {
+  width: 24px;
+  height: 24px;
+}
+
+.emptyTitle {
+  font-size: 20px;
+}
+
+.emptyText {
+  max-width: 36ch;
+  color: var(--ink-muted);
+}
+
+.emptyCta {
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-strong);
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
+}
+
+.emptyCta:hover {
+  border-color: var(--accent);
+  background: #fff7ed;
+}
