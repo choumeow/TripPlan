@@ -4,6 +4,9 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../auth/AuthContext'
 import { useProfile } from '../hooks/useProfile'
 import { supabase } from '../lib/supabaseClient'
+import { BoardingPassCard } from '../components/BoardingPassCard'
+import { PlaneIcon } from '../components/PlaneIcon'
+import styles from './Onboarding.module.css'
 
 export function Onboarding() {
   const { user } = useAuth()
@@ -17,7 +20,7 @@ export function Onboarding() {
     if (profile?.display_name) setName(profile.display_name)
   }, [profile?.display_name])
 
-  if (isLoading) return <div>Loading…</div>
+  if (isLoading) return <div className={styles.loading}>Loading…</div>
   if (profile?.onboarded) return <Navigate to="/" replace />
 
   async function handleSubmit(event) {
@@ -36,20 +39,33 @@ export function Onboarding() {
   }
 
   return (
-    <main>
-      <h1>Welcome to TripPlan</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">What's your name?</label>
+    <BoardingPassCard
+      eyebrow={
+        <>
+          <PlaneIcon className={styles.plane} />
+          Boarding pass
+        </>
+      }
+      code="TP·002"
+    >
+      <h1 className={styles.title}>Welcome to TripPlan</h1>
+      <p className={styles.sub}>One detail before you board.</p>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <label htmlFor="name" className={styles.label}>
+          What's your name?
+        </label>
         <input
           id="name"
+          className={styles.input}
           value={name}
           onChange={(event) => setName(event.target.value)}
+          placeholder="e.g. Ana"
           autoFocus
         />
-        <button type="submit" disabled={saving}>
+        <button type="submit" className={styles.submit} disabled={saving}>
           Continue
         </button>
       </form>
-    </main>
+    </BoardingPassCard>
   )
 }
