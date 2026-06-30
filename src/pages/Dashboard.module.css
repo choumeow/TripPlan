@@ -94,3 +94,24 @@
   border-color: var(--accent);
   background: #fff7ed;
 }
+
+.muted {
+  color: var(--ink-muted);
+}
+.error {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.error button {
+  padding: var(--space-2) var(--space-4);
+  font-weight: 600;
+  color: var(--primary-strong);
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+}
