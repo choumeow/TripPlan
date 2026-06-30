@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import { TripTimeline } from './TripTimeline'
 
 const mk = (id, start_date, end_date) => ({
@@ -14,10 +15,14 @@ describe('TripTimeline', () => {
       mk('soon', '2026-07-12', '2026-07-19'),
       mk('later', '2026-10-02', '2026-10-08'),
     ]
-    render(<TripTimeline trips={trips} today="2026-06-30" />)
-    expect(screen.getByRole('button', { name: /past/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /soon/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /later/i })).toBeInTheDocument()
+    render(
+      <MemoryRouter>
+        <TripTimeline trips={trips} today="2026-06-30" />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('link', { name: /past/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /soon/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /later/i })).toBeInTheDocument()
     // hero is marked for the layout
     expect(screen.getByTestId('hero-slot')).toHaveTextContent('soon')
   })

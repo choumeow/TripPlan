@@ -8,6 +8,7 @@ import { DashboardLayout } from './components/DashboardLayout'
 import { Login } from './pages/Login'
 import { Onboarding } from './pages/Onboarding'
 import { Dashboard } from './pages/Dashboard'
+import { TripWorkspace } from './pages/TripWorkspace'
 
 const queryClient = new QueryClient()
 
@@ -30,6 +31,7 @@ export default function App() {
               <Route element={<RequireOnboarded />}>
                 <Route element={<DashboardLayout />}>
                   <Route path="/" element={<Dashboard />} />
+                  <Route path="/trip/:tripId" element={<TripWorkspace />} />
                 </Route>
               </Route>
             </Route>

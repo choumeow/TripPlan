@@ -1,11 +1,11 @@
 .card {
+  display: block;
   width: 240px;
   height: 330px;
   perspective: 1200px;
   cursor: pointer;
-  background: transparent;
-  border: none;
-  padding: 0;
+  text-decoration: none;
+  color: inherit;
 }
 .card:focus-visible {
   outline: 2px solid var(--ring);
@@ -23,7 +23,9 @@
   transition: transform 0.5s var(--ease);
   transform-style: preserve-3d;
 }
-.flipped .inner {
+/* Flip to the back on hover or keyboard focus. */
+.card:hover .inner,
+.card:focus-visible .inner {
   transform: rotateY(180deg);
 }
 .front,
@@ -162,22 +164,8 @@
   color: var(--accent);
 }
 @media (prefers-reduced-motion: reduce) {
+  /* Flip instantly (no animation) but still reveal the back on hover/focus. */
   .inner {
     transition: none;
-  }
-  .flipped .inner {
-    transform: none;
-  }
-  .flipped .front {
-    display: none;
-  }
-  .back {
-    transform: none;
-  }
-  .flipped .back {
-    position: relative;
-  }
-  .front {
-    position: relative;
   }
 }

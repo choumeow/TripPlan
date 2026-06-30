@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router-dom'
 import { TripCard } from './TripCard'
 
 const trip = {
@@ -17,27 +17,32 @@ const trip = {
   ],
 }
 
+function renderCard() {
+  return render(
+    <MemoryRouter>
+      <TripCard trip={trip} today="2026-06-30" />
+    </MemoryRouter>,
+  )
+}
+
 describe('TripCard', () => {
   it('shows the front: name, place, dates, countdown', () => {
-    render(<TripCard trip={trip} today="2026-06-30" />)
+    renderCard()
     expect(screen.getByText('Tokyo Trip')).toBeInTheDocument()
     expect(screen.getByText('Tokyo, Japan')).toBeInTheDocument()
     expect(screen.getByText('12 days to go')).toBeInTheDocument()
   })
 
-  it('flips to the back on click, showing travellers and roles', async () => {
-    render(<TripCard trip={trip} today="2026-06-30" />)
-    await userEvent.click(screen.getByRole('button', { name: /tokyo trip/i }))
+  it('is a link to the trip workspace', () => {
+    renderCard()
+    const link = screen.getByRole('link', { name: /open tokyo trip/i })
+    expect(link).toHaveAttribute('href', '/trip/t1')
+  })
+
+  it('renders the back: traveller count and roles (revealed on hover/focus)', () => {
+    renderCard()
     expect(screen.getByText('2 Travellers')).toBeInTheDocument()
     expect(screen.getByText('Ana')).toBeInTheDocument()
     expect(screen.getByText('host')).toBeInTheDocument()
-  })
-
-  it('flips with the keyboard', async () => {
-    render(<TripCard trip={trip} today="2026-06-30" />)
-    const card = screen.getByRole('button', { name: /tokyo trip/i })
-    card.focus()
-    await userEvent.keyboard('{Enter}')
-    expect(screen.getByText('2 Travellers')).toBeInTheDocument()
   })
 })

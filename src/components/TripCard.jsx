@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   countdownLabel,
   nights,
@@ -19,8 +19,9 @@ function initials(name) {
   return (name || '?').trim().charAt(0).toUpperCase()
 }
 
+// The card is a link to the trip workspace (click/Enter opens it). It flips to the
+// back on hover/focus via CSS — no flipped state needed.
 export function TripCard({ trip, today, size }) {
-  const [flipped, setFlipped] = useState(false)
   const members = trip.trip_members ?? []
   const label = countdownLabel(trip, today)
   // Short, distinct label for the journey bar (front badge shows the full label).
@@ -32,25 +33,11 @@ export function TripCard({ trip, today, size }) {
         ? 'In progress'
         : 'Completed'
 
-  function toggle() {
-    setFlipped((f) => !f)
-  }
-  function onKey(e) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      toggle()
-    }
-  }
-
   return (
-    <div
-      className={`${styles.card} ${size === 'hero' ? styles.hero : ''} ${flipped ? styles.flipped : ''}`}
-      role="button"
-      tabIndex={0}
-      aria-pressed={flipped}
-      aria-label={`${trip.name}. Tap to flip.`}
-      onClick={toggle}
-      onKeyDown={onKey}
+    <Link
+      to={`/trip/${trip.id}`}
+      className={`${styles.card} ${size === 'hero' ? styles.hero : ''}`}
+      aria-label={`Open ${trip.name}`}
     >
       <div className={styles.inner}>
         <section className={styles.front}>
@@ -69,7 +56,7 @@ export function TripCard({ trip, today, size }) {
             </p>
             <div className={styles.perf} />
             <span className={styles.badge}>{label}</span>
-            <p className={styles.hint}>⟲ tap to flip</p>
+            <p className={styles.hint}>hover for crew · click to open</p>
           </div>
         </section>
 
@@ -93,10 +80,10 @@ export function TripCard({ trip, today, size }) {
                 ))}
               </ul>
             </div>
-            <p className={styles.hint}>⟲ tap to flip back</p>
+            <p className={styles.hint}>click to open →</p>
           </div>
         </section>
       </div>
-    </div>
+    </Link>
   )
 }
