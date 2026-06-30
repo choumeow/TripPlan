@@ -646,7 +646,13 @@ describe('TripCard', () => {
 
 ```jsx
 import { useState } from 'react'
-import { countdownLabel, nights, journeyProgress } from '../lib/tripDates'
+import {
+  countdownLabel,
+  nights,
+  journeyProgress,
+  daysToGo,
+  tripStatus,
+} from '../lib/tripDates'
 import { JourneyBar } from './JourneyBar'
 import styles from './TripCard.module.css'
 
@@ -664,6 +670,15 @@ export function TripCard({ trip, today, size }) {
   const [flipped, setFlipped] = useState(false)
   const members = trip.trip_members ?? []
   const label = countdownLabel(trip, today)
+  // Short, distinct label for the journey bar (front badge shows the full label),
+  // so the same string isn't rendered twice on the always-mounted card faces.
+  const status = tripStatus(trip, today)
+  const shortLabel =
+    status === 'upcoming'
+      ? `${daysToGo(trip, today)} days`
+      : status === 'current'
+        ? 'In progress'
+        : 'Completed'
 
   function toggle() {
     setFlipped((f) => !f)
@@ -710,7 +725,7 @@ export function TripCard({ trip, today, size }) {
           <span className={styles.colbar} style={{ background: trip.accent_color }} />
           <div className={styles.pad}>
             <p className={styles.bktitle}>{members.length} Travellers</p>
-            <JourneyBar progress={journeyProgress(trip, today)} label={label} />
+            <JourneyBar progress={journeyProgress(trip, today)} label={shortLabel} />
             <div className={styles.scrollwrap}>
               <ul className={styles.clist}>
                 {members.map((m) => (
