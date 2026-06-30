@@ -13,3 +13,15 @@
 .heroSlot {
   scroll-snap-align: center;
 }
+/* Past trips read as faded; restore on hover so the crew stays readable. */
+.dim {
+  opacity: 0.65;
+  filter: saturate(0.8);
+  transition:
+    opacity var(--dur) var(--ease),
+    filter var(--dur) var(--ease);
+}
+.dim:hover {
+  opacity: 1;
+  filter: none;
+}

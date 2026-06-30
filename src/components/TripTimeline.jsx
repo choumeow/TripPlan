@@ -7,7 +7,7 @@ export function TripTimeline({ trips, today }) {
   return (
     <div className={styles.rail}>
       {previous.map((trip) => (
-        <div key={trip.id} className={styles.slot}>
+        <div key={trip.id} className={`${styles.slot} ${styles.dim}`}>
           <TripCard trip={trip} today={today} />
         </div>
       ))}
