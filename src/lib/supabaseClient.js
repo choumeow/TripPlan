@@ -9,4 +9,10 @@ if (!url || !anonKey) {
   )
 }
 
-export const supabase = createClient(url, anonKey)
+export const supabase = createClient(url, anonKey, {
+  auth: {
+    // PKCE returns the OAuth code as a query param (?code=) instead of a URL
+    // hash (#access_token=) — cleaner post-login URLs and more secure.
+    flowType: 'pkce',
+  },
+})
