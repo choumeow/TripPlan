@@ -34,8 +34,10 @@
   text-decoration: none;
 }
 
-.plane {
-  color: var(--primary);
+.logo {
+  display: block;
+  height: 30px;
+  width: auto;
 }
 
 .actions {

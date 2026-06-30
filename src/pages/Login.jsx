@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { BoardingPassCard } from '../components/BoardingPassCard'
 import { GoogleIcon } from '../components/GoogleIcon'
-import { PlaneIcon } from '../components/PlaneIcon'
+import { Logo } from '../components/Logo'
 import styles from './Login.module.css'
 
 export function Login() {
@@ -12,7 +12,7 @@ export function Login() {
     <BoardingPassCard
       eyebrow={
         <>
-          <PlaneIcon className={styles.plane} />
+          <Logo className={styles.logo} />
           TripPlan
         </>
       }

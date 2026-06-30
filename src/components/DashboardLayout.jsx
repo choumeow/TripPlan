@@ -1,6 +1,6 @@
 import { Link, Outlet } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
-import { PlaneIcon } from './PlaneIcon'
+import { Logo } from './Logo'
 import { BellIcon } from './BellIcon'
 import styles from './DashboardLayout.module.css'
 
@@ -15,7 +15,7 @@ export function DashboardLayout() {
     <div className={styles.shell}>
       <header className={styles.topbar}>
         <Link to="/" className={styles.brand}>
-          <PlaneIcon className={styles.plane} />
+          <Logo className={styles.logo} />
           TripPlan
         </Link>
         <div className={styles.actions}>
