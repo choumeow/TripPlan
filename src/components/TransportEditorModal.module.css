@@ -1,0 +1,21 @@
+.pass { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; }
+.colbar { height: 7px; background: var(--primary); }
+.pad { padding: var(--space-6); }
+.ey { font-size: 11px; letter-spacing: 0.05em; color: var(--ink-muted); font-weight: 700; }
+.title { margin: 6px 0 var(--space-4); font-size: 22px; }
+.label { display: block; margin: var(--space-3) 0 var(--space-1); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-muted); }
+.toggle { display: inline-flex; border: 1.5px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.toggleBtn { padding: var(--space-2) var(--space-5); font-size: 14px; font-weight: 600; color: var(--ink-muted); background: var(--surface); border: none; }
+.toggleOn { background: var(--primary); color: #fff; }
+.chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.chip { padding: var(--space-2) var(--space-3); font-size: 13px; font-weight: 600; color: var(--ink-muted); background: var(--surface); border: 1.5px solid var(--border); border-radius: 999px; }
+.chipOn { background: var(--primary); color: #fff; border-color: var(--primary); }
+.input { width: 100%; padding: var(--space-3); font-family: var(--font-body); font-size: 15px; color: var(--ink); background: var(--c-mist); border: 1.5px solid var(--border); border-radius: var(--radius-md); box-sizing: border-box; }
+.input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.18); }
+.row { display: flex; gap: var(--space-3); }
+.col { flex: 1; }
+.error { margin-top: var(--space-3); color: var(--c-danger); font-size: 13px; }
+.actions { display: flex; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-5); }
+.cancel { padding: var(--space-3) var(--space-4); font-weight: 600; color: var(--ink-muted); background: transparent; border: 1.5px solid var(--border); border-radius: var(--radius-md); }
+.submit { padding: var(--space-3) var(--space-5); font-weight: 700; color: #fff; background: var(--accent); border: none; border-radius: var(--radius-md); }
+.submit:disabled { opacity: 0.6; cursor: not-allowed; }
