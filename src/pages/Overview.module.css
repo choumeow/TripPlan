@@ -1,0 +1,12 @@
+.hero { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
+.accent { display: block; height: 7px; }
+.pad { padding: var(--space-5); }
+.ey { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--ink-muted); }
+.code { font-family: var(--font-mono); font-size: 11px; color: var(--primary-strong); background: var(--c-mist); padding: 2px 7px; border-radius: 6px; }
+.edit { position: absolute; top: var(--space-5); right: var(--space-5); font-size: 12px; font-weight: 600; color: var(--primary-strong); background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: var(--space-1) var(--space-3); }
+.edit:hover { border-color: var(--primary); }
+.dest { margin: var(--space-3) 0 2px; font-size: 28px; }
+.place { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--ink-muted); }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); }
+.dates { margin: var(--space-3) 0; font-family: var(--font-mono); font-size: 13px; color: var(--ink); }
+.badge { display: inline-block; padding: 4px 12px; font-size: 12px; font-weight: 700; color: #fff; background: var(--accent); border-radius: 999px; }
