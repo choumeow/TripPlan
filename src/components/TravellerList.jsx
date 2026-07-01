@@ -1,8 +1,5 @@
+import { initials } from '../lib/display'
 import styles from './TravellerList.module.css'
-
-function initials(name) {
-  return (name || '?').trim().charAt(0).toUpperCase()
-}
 
 export function TravellerList({ trip }) {
   const members = trip.trip_members ?? []

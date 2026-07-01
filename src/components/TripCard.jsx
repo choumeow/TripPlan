@@ -5,19 +5,11 @@ import {
   journeyProgress,
   daysToGo,
   tripStatus,
+  monthDay,
 } from '../lib/tripDates'
+import { initials } from '../lib/display'
 import { JourneyBar } from './JourneyBar'
 import styles from './TripCard.module.css'
-
-function fmt(dateStr) {
-  const [, m, d] = dateStr.split('-')
-  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
-  return `${months[Number(m) - 1]} ${d}`
-}
-
-function initials(name) {
-  return (name || '?').trim().charAt(0).toUpperCase()
-}
 
 // The card is a link to the trip workspace (click/Enter opens it). It flips to the
 // back on hover/focus via CSS — no flipped state needed.
@@ -52,7 +44,7 @@ export function TripCard({ trip, today, size }) {
               <span className={styles.dot} /> {trip.place}
             </p>
             <p className={styles.dates}>
-              {fmt(trip.start_date)} — {fmt(trip.end_date)} · {nights(trip)} nights
+              {monthDay(trip.start_date)} — {monthDay(trip.end_date)} · {nights(trip)} nights
             </p>
             <div className={styles.perf} />
             <span className={styles.badge}>{label}</span>
