@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-const { single, select, eq, insert, update, from } = vi.hoisted(() => {
+const { single, eq, insert, update, from } = vi.hoisted(() => {
   const single = vi.fn()
   const select = vi.fn(() => ({ single }))
   const eq = vi.fn(() => ({ select }))
