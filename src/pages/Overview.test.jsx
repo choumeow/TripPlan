@@ -4,8 +4,17 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Routes, Route, Outlet } from 'react-router-dom'
 
 vi.mock('../components/TransportSection', () => ({ TransportSection: () => <div>TransportSection</div> }))
-vi.mock('../components/TravellerList', () => ({ TravellerList: () => <div>TravellerList</div> }))
+vi.mock('../components/TravellerList', () => ({
+  TravellerList: ({ canManage, onAdd }) => (
+    <div>
+      TravellerList
+      {canManage && <button type="button" onClick={onAdd}>add-traveller-proxy</button>}
+    </div>
+  ),
+}))
 vi.mock('../components/EditTripModal', () => ({ EditTripModal: () => <div>EditTripModal</div> }))
+vi.mock('../components/AddTravellerModal', () => ({ AddTravellerModal: () => <div>AddTravellerModal</div> }))
+vi.mock('../hooks/useRemoveMember', () => ({ useRemoveMember: () => ({ mutate: vi.fn() }) }))
 vi.mock('../auth/AuthContext', () => ({ useAuth: vi.fn() }))
 
 import { useAuth } from '../auth/AuthContext'
@@ -52,5 +61,18 @@ describe('Overview', () => {
     useAuth.mockReturnValue({ user: { id: 'u1' } })
     renderOverview({ ...trip, trip_members: [{ id: 'm1', user_id: 'u1', role: 'viewer' }] })
     expect(screen.queryByRole('button', { name: /edit/i })).not.toBeInTheDocument()
+  })
+
+  it('lets a host open the add-traveller modal', async () => {
+    useAuth.mockReturnValue({ user: { id: 'u1' } })
+    renderOverview()
+    await userEvent.click(screen.getByRole('button', { name: /add-traveller-proxy/i }))
+    expect(screen.getByText('AddTravellerModal')).toBeInTheDocument()
+  })
+
+  it('does not offer management to a viewer', () => {
+    useAuth.mockReturnValue({ user: { id: 'u1' } })
+    renderOverview({ ...trip, trip_members: [{ id: 'm1', user_id: 'u1', role: 'viewer' }] })
+    expect(screen.queryByRole('button', { name: /add-traveller-proxy/i })).not.toBeInTheDocument()
   })
 })
