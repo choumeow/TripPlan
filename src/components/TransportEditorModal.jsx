@@ -28,7 +28,7 @@ export function TransportEditorModal({ onClose, tripId, initial, createdBy }) {
     }
     setError('')
     mutate(
-      { ...form, from: form.from.trim(), to: form.to.trim(), reference: form.reference.trim(), createdBy },
+      { ...form, from: form.from.trim(), to: form.to.trim(), reference: methodMeta(form.method).ref ? form.reference.trim() : '', createdBy },
       { onSuccess: onClose, onError: () => setError('Could not save this leg. Please try again.') },
     )
   }
