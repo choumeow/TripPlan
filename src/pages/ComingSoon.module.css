@@ -1,0 +1,4 @@
+.wrap { display: grid; justify-items: center; text-align: center; gap: var(--space-3); padding: var(--space-8) var(--space-5); background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius-lg); }
+.badge { display: grid; place-items: center; width: 56px; height: 56px; font-size: 26px; background: var(--c-mist); border-radius: 50%; }
+.title { font-size: 20px; }
+.text { max-width: 40ch; color: var(--ink-muted); }
