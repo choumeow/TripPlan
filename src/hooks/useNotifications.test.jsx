@@ -2,11 +2,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-const { order, select, from } = vi.hoisted(() => {
+const { order, from } = vi.hoisted(() => {
   const order = vi.fn()
   const select = vi.fn(() => ({ order }))
   const from = vi.fn(() => ({ select }))
-  return { order, select, from }
+  return { order, from }
 })
 vi.mock('../lib/supabaseClient', () => ({ supabase: { from } }))
 vi.mock('../auth/AuthContext', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }))
