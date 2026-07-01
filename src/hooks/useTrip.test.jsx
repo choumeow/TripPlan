@@ -28,6 +28,7 @@ describe('useTrip', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
     expect(from).toHaveBeenCalledWith('trips')
     expect(select).toHaveBeenCalledWith(expect.stringContaining('transport'))
+    expect(select).toHaveBeenCalledWith(expect.stringContaining('invite_status'))
     expect(eq).toHaveBeenCalledWith('id', 't1')
     expect(result.current.data.name).toBe('Tokyo')
   })
