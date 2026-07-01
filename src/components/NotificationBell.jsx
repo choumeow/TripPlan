@@ -6,6 +6,12 @@ import { useMarkNotificationsRead } from '../hooks/useMarkNotificationsRead'
 import { useRespondInvite } from '../hooks/useRespondInvite'
 import styles from './NotificationBell.module.css'
 
+function respondErrorText(error) {
+  return String(error?.message).includes('no pending invite')
+    ? 'This invite is no longer available.'
+    : 'Could not update this invite. Please try again.'
+}
+
 export function NotificationBell() {
   const [open, setOpen] = useState(false)
   const rootRef = useRef(null)
@@ -43,6 +49,9 @@ export function NotificationBell() {
       {open && (
         <div className={styles.panel}>
           <p className={styles.head}>Notifications</p>
+          {respond.isError && (
+            <p className={styles.err} role="alert">{respondErrorText(respond.error)}</p>
+          )}
           {items.length === 0 ? (
             <p className={styles.empty}>No notifications yet.</p>
           ) : (

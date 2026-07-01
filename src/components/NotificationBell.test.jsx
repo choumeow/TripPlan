@@ -55,4 +55,14 @@ describe('NotificationBell', () => {
     await userEvent.click(screen.getByRole('button', { name: /notifications/i }))
     expect(screen.getByText(/no notifications yet/i)).toBeInTheDocument()
   })
+
+  it('surfaces a stale-invite error when responding fails', async () => {
+    useRespondInvite.mockReturnValue({
+      mutate: vi.fn(), isPending: false, isError: true, error: { message: 'no pending invite' },
+    })
+    useNotifications.mockReturnValue({ items: [invite], unreadCount: 1 })
+    render(<NotificationBell />)
+    await userEvent.click(screen.getByRole('button', { name: /notifications/i }))
+    expect(screen.getByText(/no longer available/i)).toBeInTheDocument()
+  })
 })
