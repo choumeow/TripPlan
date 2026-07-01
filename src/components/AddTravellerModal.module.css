@@ -1,0 +1,28 @@
+.pass { display: flex; background: #fff; border-radius: var(--radius-lg, 16px); overflow: hidden; width: min(420px, 92vw); }
+.colbar { flex: none; width: 8px; background: var(--primary); }
+.pad { flex: 1; padding: var(--space-5); }
+.ey { margin: 0 0 var(--space-3); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--ink-muted); }
+.toggle { display: flex; gap: var(--space-2); margin-bottom: var(--space-4); }
+.toggleBtn {
+  flex: 1; padding: var(--space-2); font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--border); border-radius: var(--radius-md);
+  background: transparent; color: var(--ink);
+}
+.toggleOn { border-color: var(--primary); color: var(--primary-strong); background: var(--c-mist); }
+.label { display: block; margin: var(--space-3) 0 var(--space-1); font-size: 13px; font-weight: 600; color: var(--ink); }
+.input {
+  width: 100%; padding: var(--space-2) var(--space-3); font-size: 14px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-md); background: #fff;
+}
+.chips { display: flex; gap: var(--space-2); }
+.chip {
+  padding: var(--space-2) var(--space-4); font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--border); border-radius: 999px; background: transparent; color: var(--ink);
+}
+.chipOn { border-color: var(--primary); color: var(--primary-strong); background: var(--c-mist); }
+.hint { margin: var(--space-2) 0 0; font-size: 12px; color: var(--ink-muted); }
+.error { margin: var(--space-3) 0 0; font-size: 13px; color: #dc2626; }
+.actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-5); }
+.cancel { padding: var(--space-2) var(--space-4); font-weight: 600; background: transparent; border: 1.5px solid var(--border); border-radius: var(--radius-md); color: var(--ink); }
+.submit { padding: var(--space-2) var(--space-4); font-weight: 600; background: var(--primary); border: 1.5px solid var(--primary); border-radius: var(--radius-md); color: #fff; }
+.submit:disabled { opacity: 0.5; }
