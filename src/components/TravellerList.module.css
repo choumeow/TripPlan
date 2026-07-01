@@ -6,3 +6,18 @@
 .name { flex: 1; font-size: 15px; color: var(--ink); }
 .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-muted); }
 .host { color: var(--accent); }
+.head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.addBtn {
+  padding: var(--space-1) var(--space-3); font-size: 13px; font-weight: 600;
+  color: var(--primary-strong); background: var(--c-mist);
+  border: 1.5px solid var(--border); border-radius: var(--radius-md);
+}
+.pending {
+  padding: 1px 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+  color: var(--ink-muted); background: var(--c-mist); border-radius: 999px;
+}
+.remove {
+  margin-left: var(--space-1); width: 24px; height: 24px; display: grid; place-items: center;
+  color: var(--ink-muted); background: transparent; border: 1px solid transparent; border-radius: 50%;
+}
+.remove:hover { color: #dc2626; background: #fef2f2; }
