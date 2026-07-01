@@ -48,3 +48,11 @@ export function arrangeTimeline(trips, today) {
   const [hero = null, ...future] = notPast
   return { previous, hero, future }
 }
+
+const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
+
+export function monthDay(dateStr) {
+  if (!dateStr) return ''
+  const [, m, d] = dateStr.split('-')
+  return `${MONTHS[Number(m) - 1]} ${d}`
+}

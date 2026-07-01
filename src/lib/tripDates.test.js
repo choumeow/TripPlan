@@ -6,6 +6,7 @@ import {
   countdownLabel,
   journeyProgress,
   arrangeTimeline,
+  monthDay,
 } from './tripDates'
 
 const trip = (start_date, end_date, extra = {}) => ({ start_date, end_date, ...extra })
@@ -58,5 +59,16 @@ describe('tripDates', () => {
     const r = arrangeTimeline([trip('2026-01-01', '2026-01-05', { id: 'a' })], '2026-06-30')
     expect(r.hero).toBeNull()
     expect(r.previous.map((t) => t.id)).toEqual(['a'])
+  })
+})
+
+describe('monthDay', () => {
+  it('formats YYYY-MM-DD as an uppercase month + day', () => {
+    expect(monthDay('2026-07-12')).toBe('JUL 12')
+    expect(monthDay('2026-01-05')).toBe('JAN 05')
+  })
+  it('returns empty string for a falsy date', () => {
+    expect(monthDay('')).toBe('')
+    expect(monthDay(null)).toBe('')
   })
 })
