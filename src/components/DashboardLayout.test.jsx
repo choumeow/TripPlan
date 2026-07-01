@@ -4,6 +4,9 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 
 vi.mock('../auth/AuthContext', () => ({ useAuth: vi.fn() }))
+vi.mock('./NotificationBell', () => ({
+  NotificationBell: () => <button type="button" aria-label="Notifications" />,
+}))
 import { useAuth } from '../auth/AuthContext'
 import { DashboardLayout } from './DashboardLayout'
 

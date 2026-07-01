@@ -1,7 +1,7 @@
 import { Link, Outlet } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { Logo } from './Logo'
-import { BellIcon } from './BellIcon'
+import { NotificationBell } from './NotificationBell'
 import styles from './DashboardLayout.module.css'
 
 /**
@@ -19,13 +19,7 @@ export function DashboardLayout() {
           TripPlan
         </Link>
         <div className={styles.actions}>
-          <button
-            type="button"
-            className={styles.iconBtn}
-            aria-label="Notifications"
-          >
-            <BellIcon className={styles.bell} />
-          </button>
+          <NotificationBell />
           <button type="button" className={styles.signout} onClick={signOut}>
             Sign out
           </button>
