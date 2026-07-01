@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './auth/AuthContext'
 import { ProtectedRoute } from './auth/ProtectedRoute'
@@ -9,6 +9,8 @@ import { Login } from './pages/Login'
 import { Onboarding } from './pages/Onboarding'
 import { Dashboard } from './pages/Dashboard'
 import { TripWorkspace } from './pages/TripWorkspace'
+import { Overview } from './pages/Overview'
+import { ComingSoon } from './pages/ComingSoon'
 
 const queryClient = new QueryClient()
 
@@ -31,7 +33,14 @@ export default function App() {
               <Route element={<RequireOnboarded />}>
                 <Route element={<DashboardLayout />}>
                   <Route path="/" element={<Dashboard />} />
-                  <Route path="/trip/:tripId" element={<TripWorkspace />} />
+                  <Route path="/trip/:tripId" element={<TripWorkspace />}>
+                    <Route index element={<Navigate to="overview" replace />} />
+                    <Route path="overview" element={<Overview />} />
+                    <Route path="planning" element={<ComingSoon section="Planning" />} />
+                    <Route path="packing" element={<ComingSoon section="Packing" />} />
+                    <Route path="finance" element={<ComingSoon section="Finance" />} />
+                    <Route path="discussion" element={<ComingSoon section="Discussion" />} />
+                  </Route>
                 </Route>
               </Route>
             </Route>
