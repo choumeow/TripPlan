@@ -1,0 +1,27 @@
+.flip { perspective: 1000px; height: 132px; }
+.flip.dim { opacity: 0.32; }
+.inner { position: relative; width: 100%; height: 100%; transition: transform 0.45s; transform-style: preserve-3d; cursor: grab; }
+.flip:hover .inner, .flip.flipped .inner { transform: rotateY(180deg); }
+.flip.pressing .inner { transform: rotateY(0deg) !important; cursor: grabbing; }
+@media (prefers-reduced-motion: reduce) {
+  .inner { transition: opacity 0.2s; transform: none !important; }
+  .back { opacity: 0; }
+  .flip:hover .back, .flip.flipped .back { opacity: 1; }
+  .flip:hover .front, .flip.flipped .front { opacity: 0; }
+}
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border: 1px solid var(--border); border-radius: 12px; background: #fff; box-shadow: 0 3px 10px rgba(15,23,42,0.06); overflow: hidden; display: flex; }
+.front .stripe, .stripe { width: 5px; flex: none; }
+.fbody { padding: 10px 12px; flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.nm { font-size: 14px; font-weight: 700; color: var(--ink); margin: 0 0 6px; line-height: 1.2; }
+.pill { display: inline-block; width: fit-content; font-size: 9px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; padding: 2px 8px; border-radius: 999px; }
+.avail { display: block; width: fit-content; font-size: 10px; font-weight: 600; color: #0f766e; background: #f0fdfa; border-radius: 5px; padding: 2px 6px; margin-top: 6px; }
+.who { margin-top: auto; display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--ink-muted); }
+.av { width: 17px; height: 17px; border-radius: 50%; color: #fff; font-size: 10px; font-weight: 700; display: grid; place-items: center; }
+.back { transform: rotateY(180deg); flex-direction: column; }
+.btop { height: 4px; width: 100%; flex: none; }
+.bbody { padding: 9px 12px; overflow-y: auto; flex: 1; font-size: 11px; color: var(--ink-muted); line-height: 1.55; }
+.row { display: flex; gap: 6px; margin-top: 4px; }
+.row:first-child { margin-top: 0; }
+.k { font-weight: 700; color: #334155; min-width: 58px; flex: none; }
+.acts { display: flex; gap: 8px; justify-content: flex-end; padding: 5px 10px; border-top: 1px solid #f1f5f9; flex: none; }
+.ibtn { font-size: 11px; color: var(--ink-muted); background: none; border: none; cursor: pointer; }
