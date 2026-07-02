@@ -1,21 +1,45 @@
+import { useState } from 'react'
 import { tripDays, monthDay } from '../lib/tripDates'
+import { partitionSchedule } from '../lib/schedule'
+import { categoryMeta } from '../lib/placeCategories'
+import { methodMeta } from '../lib/transport'
+import { ViewToggle } from './ViewToggle'
+import { DayColumn } from './DayColumn'
 import styles from './PlanningSchedule.module.css'
 
-// #3a: a non-functional preview of the day-by-day plan. #3c seeds it from a template;
-// #3b turns the columns into real drop targets (drag suggestions in) with times.
-export function PlanningSchedule({ trip }) {
-  const days = tripDays(trip)
+const STAY = { label: 'Stay', color: '#22C55E' }
+const TRANSPORT_COLOR = '#14B8A6'
+
+// A scheduled wrapped item → the compact card view-model DayColumn/ScheduledCard render.
+function toCard(item) {
+  const r = item.raw
+  if (item.source === 'transport') {
+    return { dndId: item.dndId, title: `${r.from_text} → ${r.to_text}`, color: TRANSPORT_COLOR, time: item.time, durationMin: null }
+  }
+  const meta = r.kind === 'place' ? categoryMeta(r.category) : STAY
+  return { dndId: item.dndId, title: r.title, color: meta.color, time: item.time, durationMin: r.duration_min ?? null }
+}
+
+export function PlanningSchedule({ trip, canEdit, onSetTime, onRemove }) {
+  const [view, setView] = useState('board')
+  const { byDay } = partitionSchedule(trip)
+
   return (
     <section className={styles.wrap} aria-label="Planning schedule">
-      <p className={styles.note}>Your day-by-day plan — drag suggestions in here (coming soon).</p>
-      <div className={styles.days}>
-        {days.map((d) => (
-          <div key={d.index} className={styles.day}>
-            <div className={styles.dhead}>Day {d.index} · {monthDay(d.date)}</div>
-            <div className={styles.drop}>drop a suggestion here</div>
-          </div>
-        ))}
+      <div className={styles.head}>
+        <ViewToggle view={view} onChange={setView} />
       </div>
+      {view === 'board' ? (
+        <div className={styles.days}>
+          {tripDays(trip).map((d) => (
+            <DayColumn key={d.date} date={d.date} label={`Day ${d.index} · ${monthDay(d.date)}`}
+              cards={(byDay[d.date] ?? []).map(toCard)} canEdit={canEdit}
+              onSetTime={(card, patch) => onSetTime(card, patch)} onRemove={(card) => onRemove(card)} />
+          ))}
+        </div>
+      ) : (
+        <div className={styles.soon}>The {view} view is coming soon.</div>
+      )}
     </section>
   )
 }
