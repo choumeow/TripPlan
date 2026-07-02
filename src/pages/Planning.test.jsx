@@ -8,6 +8,7 @@ vi.mock('../components/PlanningSchedule', () => ({ PlanningSchedule: () => <div>
 vi.mock('../components/SuggestionEditorModal', () => ({ SuggestionEditorModal: () => <div>EditorModal</div> }))
 vi.mock('../hooks/useDeletePlanItem', () => ({ useDeletePlanItem: () => ({ mutate: vi.fn() }) }))
 vi.mock('../hooks/useDeleteTransport', () => ({ useDeleteTransport: () => ({ mutate: vi.fn() }) }))
+vi.mock('../hooks/useScheduleItem', () => ({ useScheduleItem: () => ({ mutate: vi.fn() }) }))
 vi.mock('../auth/AuthContext', () => ({ useAuth: vi.fn() }))
 
 import { useAuth } from '../auth/AuthContext'

@@ -1,5 +1,9 @@
 import { useState } from 'react'
+import { useDroppable } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { SuggestionCard } from './SuggestionCard'
+import { SortableItem } from './SortableItem'
+import { dndId } from '../lib/schedule'
 import { categoryMeta } from '../lib/placeCategories'
 import { availabilityMatches, availabilityLabel } from '../lib/planItems'
 import { methodMeta } from '../lib/transport'
@@ -64,8 +68,14 @@ export function PlanningBacklog({ trip, canEdit, onEdit, onRemove }) {
       cards: locals.map((l) => transportCard(trip, l)) },
   ]
 
+  const { setNodeRef } = useDroppable({ id: 'pending' })
+  const allIds = [
+    ...items.map((i) => dndId('plan', i.id)),
+    ...locals.map((l) => dndId('transport', l.id)),
+  ]
+
   return (
-    <section>
+    <section ref={setNodeRef}>
       <div className={styles.bar}>
         <label className={styles.blabel} htmlFor="f-date">Available on</label>
         <input id="f-date" type="date" className={styles.binput} min={trip.start_date} max={trip.end_date}
@@ -77,23 +87,27 @@ export function PlanningBacklog({ trip, canEdit, onEdit, onRemove }) {
         )}
       </div>
 
-      {groups.map((g) => (
-        <div key={g.key} className={styles.group}>
-          <div className={styles.head}>
-            <span className={styles.gtitle}><span aria-hidden="true">{g.icon}</span> {g.label} ({g.cards.length})</span>
-          </div>
-          {g.cards.length === 0 ? (
-            <p className={styles.empty}>Nothing here yet</p>
-          ) : (
-            <div className={styles.grid}>
-              {g.cards.map((card) => (
-                <SuggestionCard key={card.key} card={card} canEdit={canEdit}
-                  onEdit={() => onEdit(card.source, card.raw)} onRemove={() => onRemove(card.source, card.raw)} />
-              ))}
+      <SortableContext items={allIds} strategy={verticalListSortingStrategy}>
+        {groups.map((g) => (
+          <div key={g.key} className={styles.group}>
+            <div className={styles.head}>
+              <span className={styles.gtitle}><span aria-hidden="true">{g.icon}</span> {g.label} ({g.cards.length})</span>
             </div>
-          )}
-        </div>
-      ))}
+            {g.cards.length === 0 ? (
+              <p className={styles.empty}>Nothing here yet</p>
+            ) : (
+              <div className={styles.grid}>
+                {g.cards.map((card) => (
+                  <SortableItem key={card.key} id={dndId(card.source, card.raw.id)} disabled={!canEdit}>
+                    <SuggestionCard card={card} canEdit={canEdit}
+                      onEdit={() => onEdit(card.source, card.raw)} onRemove={() => onRemove(card.source, card.raw)} />
+                  </SortableItem>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </SortableContext>
     </section>
   )
 }
