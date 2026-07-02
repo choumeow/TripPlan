@@ -1,0 +1,3 @@
+.toggle { display: inline-flex; gap: 2px; background: var(--c-mist); border: 1px solid var(--border); border-radius: 999px; padding: 3px; }
+.btn { font-size: 13px; font-weight: 600; color: var(--ink-muted); background: transparent; border: none; border-radius: 999px; padding: 5px 14px; cursor: pointer; }
+.on { color: var(--primary-strong); background: #fff; box-shadow: 0 1px 3px rgba(15,23,42,0.1); }
