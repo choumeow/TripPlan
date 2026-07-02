@@ -52,4 +52,18 @@ describe('useUpsertTransport', () => {
     expect(update).toHaveBeenCalledWith(expect.not.objectContaining({ created_by: expect.anything() }))
     expect(eq).toHaveBeenCalledWith('id', 'x1')
   })
+
+  it('inserts a local leg with category=local, null direction, and a note', async () => {
+    single.mockResolvedValue({ data: { id: 'l1' }, error: null })
+    const { result } = renderHook(() => useUpsertTransport('t1'), { wrapper })
+    result.current.mutate({
+      category: 'local', direction: null, method: 'subway',
+      from: 'Asakusa Stn', to: 'Shibuya Stn', reference: 'Ginza line', note: '~30 min', createdBy: 'm1',
+    })
+    await waitFor(() => expect(result.current.isSuccess).toBe(true))
+    expect(insert).toHaveBeenCalledWith(expect.objectContaining({
+      category: 'local', direction: null, method: 'subway',
+      from_text: 'Asakusa Stn', to_text: 'Shibuya Stn', reference: 'Ginza line', note: '~30 min', created_by: 'm1',
+    }))
+  })
 })

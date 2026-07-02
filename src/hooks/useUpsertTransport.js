@@ -7,14 +7,15 @@ export function useUpsertTransport(tripId) {
     mutationFn: async (leg) => {
       const row = {
         trip_id: tripId,
-        category: 'journey',
-        direction: leg.direction,
+        category: leg.category || 'journey',
+        direction: leg.direction ?? null,
         method: leg.method,
         depart_date: leg.departDate || null,
         depart_time: leg.departTime || null,
         from_text: leg.from,
         to_text: leg.to,
         reference: leg.reference || null,
+        note: leg.note || null,
       }
       const query = leg.id
         ? supabase.from('transport').update(row).eq('id', leg.id)
