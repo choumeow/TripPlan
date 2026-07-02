@@ -49,18 +49,18 @@ function transportCard(trip, leg) {
   }
 }
 
-export function PlanningBacklog({ trip, canEdit, onAdd, onEdit, onRemove }) {
+export function PlanningBacklog({ trip, canEdit, onEdit, onRemove }) {
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const items = trip.plan_items ?? []
   const locals = (trip.transport ?? []).filter((t) => t.category === 'local')
 
   const groups = [
-    { key: 'places', icon: '📍', label: 'Places', addType: 'visit',
+    { key: 'places', icon: '📍', label: 'Places',
       cards: items.filter((i) => i.kind === 'place').map((i) => planItemCard(trip, i, date, time)) },
-    { key: 'stays', icon: '🏨', label: 'Stays', addType: 'stay',
+    { key: 'stays', icon: '🏨', label: 'Stays',
       cards: items.filter((i) => i.kind === 'hostel').map((i) => planItemCard(trip, i, date, time)) },
-    { key: 'transport', icon: '🚆', label: 'Local transport', addType: 'transport',
+    { key: 'transport', icon: '🚆', label: 'Local transport',
       cards: locals.map((l) => transportCard(trip, l)) },
   ]
 
@@ -81,10 +81,9 @@ export function PlanningBacklog({ trip, canEdit, onAdd, onEdit, onRemove }) {
         <div key={g.key} className={styles.group}>
           <div className={styles.head}>
             <span className={styles.gtitle}><span aria-hidden="true">{g.icon}</span> {g.label} ({g.cards.length})</span>
-            {canEdit && <button type="button" className={styles.add} onClick={() => onAdd(g.addType)}>+ Add</button>}
           </div>
           {g.cards.length === 0 ? (
-            <p className={styles.empty}>{canEdit ? `Add your first ${g.label.toLowerCase()}` : 'Nothing here yet'}</p>
+            <p className={styles.empty}>Nothing here yet</p>
           ) : (
             <div className={styles.grid}>
               {g.cards.map((card) => (

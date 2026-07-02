@@ -3,15 +3,8 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Routes, Route, Outlet } from 'react-router-dom'
 
-vi.mock('../components/PlanningBacklog', () => ({
-  PlanningBacklog: ({ canEdit, onAdd }) => (
-    <div>
-      <span>Backlog</span>
-      {canEdit && <span>canEdit</span>}
-      <button type="button" onClick={() => onAdd('visit')}>add-proxy</button>
-    </div>
-  ),
-}))
+vi.mock('../components/PlanningBacklog', () => ({ PlanningBacklog: () => <div>Backlog</div> }))
+vi.mock('../components/PlanningSchedule', () => ({ PlanningSchedule: () => <div>Schedule</div> }))
 vi.mock('../components/SuggestionEditorModal', () => ({ SuggestionEditorModal: () => <div>EditorModal</div> }))
 vi.mock('../hooks/useDeletePlanItem', () => ({ useDeletePlanItem: () => ({ mutate: vi.fn() }) }))
 vi.mock('../hooks/useDeleteTransport', () => ({ useDeleteTransport: () => ({ mutate: vi.fn() }) }))
@@ -40,22 +33,23 @@ function renderPlanning(t = trip) {
 beforeEach(() => vi.clearAllMocks())
 
 describe('Planning', () => {
-  it('renders the backlog with edit rights for a host', () => {
+  it('renders both panes and a single Add for a host', () => {
     useAuth.mockReturnValue({ user: { id: 'u1' } })
     renderPlanning()
     expect(screen.getByText('Backlog')).toBeInTheDocument()
-    expect(screen.getByText('canEdit')).toBeInTheDocument()
+    expect(screen.getByText('Schedule')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /add suggestion/i })).toBeInTheDocument()
   })
-  it('opens the editor from an add action', async () => {
+  it('opens the editor from the header Add button', async () => {
     useAuth.mockReturnValue({ user: { id: 'u1' } })
     renderPlanning()
-    await userEvent.click(screen.getByRole('button', { name: /add-proxy/i }))
+    await userEvent.click(screen.getByRole('button', { name: /add suggestion/i }))
     expect(screen.getByText('EditorModal')).toBeInTheDocument()
   })
-  it('is read-only for a viewer', () => {
+  it('hides Add for a viewer (read-only)', () => {
     useAuth.mockReturnValue({ user: { id: 'u1' } })
     renderPlanning({ ...trip, trip_members: [{ id: 'm1', user_id: 'u1', role: 'viewer' }] })
     expect(screen.getByText('Backlog')).toBeInTheDocument()
-    expect(screen.queryByText('canEdit')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /add suggestion/i })).not.toBeInTheDocument()
   })
 })

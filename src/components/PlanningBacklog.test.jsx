@@ -27,7 +27,7 @@ beforeEach(() => vi.clearAllMocks())
 
 describe('PlanningBacklog', () => {
   it('groups items and excludes journey transport', () => {
-    render(<PlanningBacklog trip={trip} canEdit={false} onAdd={vi.fn()} onEdit={vi.fn()} onRemove={vi.fn()} />)
+    render(<PlanningBacklog trip={trip} canEdit={false} onEdit={vi.fn()} onRemove={vi.fn()} />)
     expect(screen.getByText('TNM')).toBeInTheDocument()          // Places
     expect(screen.getByText('Sakura Hostel')).toBeInTheDocument() // Stays
     expect(screen.getByText(/^A → B/)).toBeInTheDocument()        // Local transport
@@ -35,7 +35,7 @@ describe('PlanningBacklog', () => {
   })
 
   it('clamps the date filter to the trip window and dims closed places', async () => {
-    render(<PlanningBacklog trip={trip} canEdit={false} onAdd={vi.fn()} onEdit={vi.fn()} onRemove={vi.fn()} />)
+    render(<PlanningBacklog trip={trip} canEdit={false} onEdit={vi.fn()} onRemove={vi.fn()} />)
     const date = screen.getByLabelText(/available on/i)
     expect(date).toHaveAttribute('min', '2026-07-03')
     expect(date).toHaveAttribute('max', '2026-07-10')
@@ -44,10 +44,8 @@ describe('PlanningBacklog', () => {
     expect(tnm).toHaveAttribute('data-dim', 'true')
   })
 
-  it('shows Add buttons only for editors', () => {
-    const { rerender } = render(<PlanningBacklog trip={trip} canEdit={false} onAdd={vi.fn()} onEdit={vi.fn()} onRemove={vi.fn()} />)
+  it('does not render any per-section add button (Add lives in the page header now)', () => {
+    render(<PlanningBacklog trip={trip} canEdit onEdit={vi.fn()} onRemove={vi.fn()} />)
     expect(screen.queryByRole('button', { name: /add/i })).not.toBeInTheDocument()
-    rerender(<PlanningBacklog trip={trip} canEdit onAdd={vi.fn()} onEdit={vi.fn()} onRemove={vi.fn()} />)
-    expect(screen.getAllByRole('button', { name: /add/i }).length).toBeGreaterThan(0)
   })
 })

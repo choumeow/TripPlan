@@ -7,6 +7,7 @@ import {
   journeyProgress,
   arrangeTimeline,
   monthDay,
+  tripDays,
 } from './tripDates'
 
 const trip = (start_date, end_date, extra = {}) => ({ start_date, end_date, ...extra })
@@ -70,5 +71,26 @@ describe('monthDay', () => {
   it('returns empty string for a falsy date', () => {
     expect(monthDay('')).toBe('')
     expect(monthDay(null)).toBe('')
+  })
+})
+
+describe('tripDays', () => {
+  it('enumerates every day of the trip inclusively', () => {
+    expect(tripDays(trip('2026-07-03', '2026-07-06'))).toEqual([
+      { index: 1, date: '2026-07-03' },
+      { index: 2, date: '2026-07-04' },
+      { index: 3, date: '2026-07-05' },
+      { index: 4, date: '2026-07-06' },
+    ])
+  })
+  it('handles a single-day trip and crosses a month boundary', () => {
+    expect(tripDays(trip('2026-07-03', '2026-07-03'))).toEqual([{ index: 1, date: '2026-07-03' }])
+    expect(tripDays(trip('2026-07-31', '2026-08-01'))).toEqual([
+      { index: 1, date: '2026-07-31' },
+      { index: 2, date: '2026-08-01' },
+    ])
+  })
+  it('returns [] when dates are missing', () => {
+    expect(tripDays({})).toEqual([])
   })
 })

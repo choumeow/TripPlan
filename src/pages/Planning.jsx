@@ -3,6 +3,7 @@ import { useOutletContext } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { callerMember, canWrite } from '../lib/tripAccess'
 import { PlanningBacklog } from '../components/PlanningBacklog'
+import { PlanningSchedule } from '../components/PlanningSchedule'
 import { SuggestionEditorModal } from '../components/SuggestionEditorModal'
 import { useDeletePlanItem } from '../hooks/useDeletePlanItem'
 import { useDeleteTransport } from '../hooks/useDeleteTransport'
@@ -28,9 +29,26 @@ export function Planning() {
 
   return (
     <section className={styles.wrap}>
-      <PlanningBacklog trip={trip} canEdit={canEdit}
-        onAdd={(type) => setEditor({ initialType: type })}
-        onEdit={handleEdit} onRemove={handleRemove} />
+      <div className={styles.header}>
+        <h1 className={styles.title}>Planning</h1>
+        {canEdit && (
+          <button type="button" className={styles.add} onClick={() => setEditor({ initialType: 'visit' })}>
+            + Add suggestion
+          </button>
+        )}
+      </div>
+
+      <div className={styles.panes}>
+        <div className={styles.pending}>
+          <p className={styles.zone}>Pending · suggestions</p>
+          <PlanningBacklog trip={trip} canEdit={canEdit} onEdit={handleEdit} onRemove={handleRemove} />
+        </div>
+        <div className={styles.plan}>
+          <p className={styles.zone}>Planning schedule</p>
+          <PlanningSchedule trip={trip} />
+        </div>
+      </div>
+
       {editor && (
         <SuggestionEditorModal
           tripId={trip.id} memberId={me?.id ?? null}

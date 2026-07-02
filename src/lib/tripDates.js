@@ -56,3 +56,17 @@ export function monthDay(dateStr) {
   const [, m, d] = dateStr.split('-')
   return `${MONTHS[Number(m) - 1]} ${d}`
 }
+
+// Every calendar day of the trip, inclusive: [{ index: 1, date: 'YYYY-MM-DD' }, ...].
+export function tripDays(trip) {
+  if (!trip?.start_date || !trip?.end_date) return []
+  const start = dayNumber(trip.start_date)
+  const end = dayNumber(trip.end_date)
+  const days = []
+  for (let n = start, i = 1; n <= end; n++, i++) {
+    const d = new Date(n * 86_400_000)
+    const date = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`
+    days.push({ index: i, date })
+  }
+  return days
+}
