@@ -1,0 +1,10 @@
+.bar { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; background: var(--c-mist); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); margin-bottom: var(--space-4); }
+.blabel { font-size: 12px; font-weight: 700; color: var(--ink-muted); }
+.binput { padding: var(--space-1) var(--space-2); font-size: 13px; border: 1.5px solid var(--border); border-radius: var(--radius-md); }
+.clear { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--primary-strong); background: none; border: none; cursor: pointer; }
+.group { margin-bottom: var(--space-5); }
+.head { display: flex; align-items: center; justify-content: space-between; margin: 0 0 var(--space-2); }
+.gtitle { font-size: 13px; font-weight: 700; color: #334155; }
+.add { font-size: 12px; font-weight: 600; color: var(--primary-strong); background: var(--c-mist); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 4px 10px; }
+.empty { margin: 0; font-size: 13px; color: var(--ink-muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--space-3); }
