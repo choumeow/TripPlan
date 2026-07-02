@@ -1,0 +1,9 @@
+.card { display: flex; align-items: center; gap: 7px; background: #fff; border: 1px solid var(--border); border-radius: 9px; padding: 7px 9px; box-shadow: 0 1px 4px rgba(15,23,42,0.05); }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.time { font-size: 11px; font-weight: 700; color: var(--primary-strong); background: var(--c-mist); border-radius: 5px; padding: 1px 5px; flex: none; }
+.nm { font-size: 12px; font-weight: 600; color: var(--ink); flex: 1; min-width: 0; }
+.acts { display: flex; gap: 3px; flex: none; }
+.ibtn { font-size: 11px; color: var(--ink-muted); background: none; border: none; cursor: pointer; }
+.editor { flex-basis: 100%; display: flex; gap: 10px; margin-top: 6px; }
+.lbl { display: flex; flex-direction: column; font-size: 10px; color: var(--ink-muted); gap: 2px; }
+.editor input { font-size: 12px; padding: 3px 5px; border: 1.5px solid var(--border); border-radius: 6px; }
