@@ -152,17 +152,32 @@ SUGGESTION_TYPES = [
 
 ## 5. UI
 
-### `Planning` page
-Reads `trip` from outlet context, derives caller role (`callerMember` + `canWrite`), owns the
-editor-modal open state, renders `PlanningBacklog`.
+### `Planning` page — two-pane layout
+A page header (title + a **single host/editor "+ Add suggestion"** button that opens the editor)
+over a **side-by-side** two-pane grid (stacks on narrow screens):
 
-### `PlanningBacklog`
-- Three grouped sections — **📍 Places / 🏨 Stays / 🚆 Local transport** — each with a count and
-  a host/editor **+ Add** (opens the editor preset to that type). Empty group → "Add your first…".
+- **Left — Pending zone (`PlanningBacklog`):** the suggestions backlog (built in #3a).
+- **Right — Planning schedule zone (`PlanningSchedule`):** the day-by-day plan. **In #3a this is a
+  non-functional preview** — empty day columns (Day 1…N from the trip dates) with a
+  "coming soon" note. #3c seeds it from templates; #3b makes the columns real drop targets (drag
+  suggestions in) with times.
+
+The page reads `trip` from outlet context, derives caller role (`callerMember` + `canWrite`), and
+owns the editor-modal state. Everything the user adds lands in the **pending** zone; scheduling
+into days is #3b.
+
+### `PlanningBacklog` (the pending zone)
+- Three grouped sections — **📍 Places / 🏨 Stays / 🚆 Local transport** — each with a count.
+  There is **no per-section Add** (the one "+ Add suggestion" lives in the page header). Empty
+  group → "Nothing here yet".
 - **Availability filter bar:** a date input **clamped to the trip window** (`min=start_date`,
   `max=end_date`) + optional time + Clear. When active: place cards surface their 🕒 availability
   and **non-matching places dim** (never hidden — nothing vanishes silently); stays & local
   transport always pass the filter.
+
+### `PlanningSchedule` (the planning-schedule zone)
+- Renders one column per trip day (`tripDates.tripDays`), each headed "Day N · MON DD" with a
+  dashed "drop a suggestion here" placeholder. Non-functional in #3a; horizontally scrollable.
 
 ### `SuggestionCard` (flip card)
 - **Hover → flip to back** (full info; back scrolls if long; no title on the back to maximise
@@ -206,8 +221,8 @@ read-only backlog. The UI mirrors the rules for UX only — RLS is the real boun
 ## 7. Error handling & edge cases
 
 - **Load fails** → inline error + retry (mirrors the Overview/dashboard pattern); never a blank page.
-- **Empty backlog** → each section shows an add prompt.
-- **Viewer** → read-only backlog (no add/edit/remove affordances).
+- **Empty backlog** → each section shows a "Nothing here yet" line; the schedule shows empty day columns.
+- **Viewer** → read-only page (no + Add / edit / remove affordances).
 - **Save fails** (network/validation) → inline modal error; modal stays open, input preserved.
 - **Filter with no matches in a group** → that group's cards **dim** rather than disappear, so
   nothing silently vanishes.
@@ -223,14 +238,16 @@ src/lib/placeCategories.js                 category → {label, color} (single s
 src/lib/suggestionTypes.js                 add-form type list → {target, kind, category, color}
 src/lib/planItems.js                       pure: blank form per type, rowToForm/formToRow,
                                              availabilityMatches(item, date, time), availabilityLabel(item)
+src/lib/tripDates.js (modify)              add tripDays(trip) → [{index, date}] for the schedule columns
 src/hooks/useTrip.js (modify)              add plan_items(*) to the embedded select
 src/hooks/useUpsertPlanItem.js             insert/update a place|hostel
 src/hooks/useDeletePlanItem.js             delete a plan item
 src/hooks/useUpsertTransport.js (modify)   accept category (default 'journey') + nullable direction
 src/components/SuggestionCard.jsx + css    flip card (hover→back, press→front); editor ✎/✕ on back
 src/components/SuggestionEditorModal.jsx + css  adaptive add/edit form (name → type → fields)
-src/components/PlanningBacklog.jsx + css   availability filter bar + 3 grouped sections + + Add
-src/pages/Planning.jsx + css               page: reads trip from context; renders backlog; owns modal state
+src/components/PlanningBacklog.jsx + css   the pending zone: availability filter + 3 grouped sections
+src/components/PlanningSchedule.jsx + css  the schedule zone: empty day columns (Day 1..N) preview
+src/pages/Planning.jsx + css               two-pane page: header + single Add; pending | schedule; modal state
 src/App.jsx (modify)                       /planning route → <Planning/> (replace ComingSoon)
 ```
 
