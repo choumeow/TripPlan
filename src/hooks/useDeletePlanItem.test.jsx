@@ -2,11 +2,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-const { eq, del, from } = vi.hoisted(() => {
+const { eq, from } = vi.hoisted(() => {
   const eq = vi.fn()
   const del = vi.fn(() => ({ eq }))
   const from = vi.fn(() => ({ delete: del }))
-  return { eq, del, from }
+  return { eq, from }
 })
 vi.mock('../lib/supabaseClient', () => ({ supabase: { from } }))
 
