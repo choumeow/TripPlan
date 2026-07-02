@@ -47,6 +47,20 @@ describe('computeDrop', () => {
     expect(drop.updates.find((u) => u.id === 'c').patch.sortOrder).toBe(0)
     expect(drop.updates.find((u) => u.id === 'b').patch.sortOrder).toBe(1)
   })
+  it('reorders DOWNWARD onto an adjacent sibling (untimed items)', () => {
+    const dayTrip = {
+      plan_items: [
+        { id: 'x', kind: 'place', category: 'visit', title: 'X', scheduled_date: '2026-07-03', start_time: null, sort_order: 0 },
+        { id: 'y', kind: 'place', category: 'visit', title: 'Y', scheduled_date: '2026-07-03', start_time: null, sort_order: 1 },
+        { id: 'z', kind: 'place', category: 'visit', title: 'Z', scheduled_date: '2026-07-03', start_time: null, sort_order: 2 },
+      ],
+      transport: [],
+    }
+    const drop = computeDrop('plan:x', 'plan:y', dayTrip) // move X down onto Y
+    expect(drop).not.toBeNull()
+    expect(drop.updates.find((u) => u.id === 'x').patch.sortOrder).toBe(1)
+    expect(drop.updates.find((u) => u.id === 'y').patch.sortOrder).toBe(0)
+  })
   it('returns null for a no-op drop (same spot)', () => {
     expect(computeDrop('plan:b', 'plan:b', trip)).toBeNull()
     expect(computeDrop('plan:b', undefined, trip)).toBeNull()

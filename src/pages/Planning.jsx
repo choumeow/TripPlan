@@ -3,7 +3,7 @@ import { useOutletContext } from 'react-router-dom'
 import { DndContext, PointerSensor, TouchSensor, KeyboardSensor, useSensor, useSensors, closestCorners } from '@dnd-kit/core'
 import { useAuth } from '../auth/AuthContext'
 import { callerMember, canWrite } from '../lib/tripAccess'
-import { computeDrop } from '../lib/schedule'
+import { computeDrop, parseDndId } from '../lib/schedule'
 import { PlanningBacklog } from '../components/PlanningBacklog'
 import { PlanningSchedule } from '../components/PlanningSchedule'
 import { SuggestionEditorModal } from '../components/SuggestionEditorModal'
@@ -42,13 +42,11 @@ export function Planning() {
   }
   // A scheduled card asks to change its time; card.dndId encodes source+id.
   function handleSetTime(card, patch) {
-    const source = card.dndId.startsWith('tr:') ? 'transport' : 'plan'
-    const id = card.dndId.slice(card.dndId.indexOf(':') + 1)
+    const { source, id } = parseDndId(card.dndId)
     schedule.mutate([{ source, id, patch }])
   }
   function handleUnschedule(card) {
-    const source = card.dndId.startsWith('tr:') ? 'transport' : 'plan'
-    const id = card.dndId.slice(card.dndId.indexOf(':') + 1)
+    const { source, id } = parseDndId(card.dndId)
     schedule.mutate([{ source, id, patch: { scheduledDate: null, sortOrder: 0 } }])
   }
 

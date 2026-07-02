@@ -45,6 +45,12 @@ export function partitionSchedule(trip) {
 
 const dayOf = (containerId) => containerId.slice(4) // 'day:2026-07-03' -> '2026-07-03'
 
+function arrayMove(list, from, to) {
+  const next = list.slice()
+  next.splice(to, 0, next.splice(from, 1)[0])
+  return next
+}
+
 // activeId/overId are dnd ids (item = 'plan:x'/'tr:x'; container = 'pending'/'day:YYYY-MM-DD').
 // Returns { updates: [{source,id,patch}] } to persist, or null for a no-op.
 export function computeDrop(activeId, overId, trip) {
@@ -55,26 +61,34 @@ export function computeDrop(activeId, overId, trip) {
 
   const active = containers.flatMap(([, arr]) => arr).find((i) => i.dndId === activeId)
   if (!active) return null
-  const fromEntry = containers.find(([, arr]) => arr.some((i) => i.dndId === activeId))
-  const from = fromEntry[0]
+  const from = containers.find(([, arr]) => arr.some((i) => i.dndId === activeId))[0]
 
-  let to, index
-  if (overId === 'pending' || overId.startsWith('day:')) {
+  const overIsContainer = overId === 'pending' || overId.startsWith('day:')
+  let to
+  if (overIsContainer) {
     to = overId
-    index = listOf(to).filter((i) => i.dndId !== activeId).length // append to end
   } else {
     const overEntry = containers.find(([, arr]) => arr.some((i) => i.dndId === overId))
     if (!overEntry) return null
     to = overEntry[0]
-    index = listOf(to).filter((i) => i.dndId !== activeId).findIndex((i) => i.dndId === overId)
   }
 
-  const target = listOf(to).filter((i) => i.dndId !== activeId)
-  const at = Math.max(0, Math.min(index, target.length))
-  target.splice(at, 0, active)
-
-  // no-op: same container, same position
-  if (from === to && listOf(from).findIndex((i) => i.dndId === activeId) === at) return null
+  // Same-container reorder uses indices on the UNFILTERED list (so a down-adjacent move isn't
+  // mistaken for a no-op); cross-container insert splices into the list without the active item.
+  let target
+  if (from === to) {
+    const list = listOf(to)
+    const oldIndex = list.findIndex((i) => i.dndId === activeId)
+    const newIndex = overIsContainer ? list.length - 1 : list.findIndex((i) => i.dndId === overId)
+    if (oldIndex === newIndex) return null
+    target = arrayMove(list, oldIndex, newIndex)
+  } else {
+    const list = listOf(to).filter((i) => i.dndId !== activeId)
+    const idx = overIsContainer ? list.length : list.findIndex((i) => i.dndId === overId)
+    const at = Math.max(0, Math.min(idx, list.length))
+    target = list.slice()
+    target.splice(at, 0, active)
+  }
 
   const scheduledDate = to === 'pending' ? null : dayOf(to)
   const updates = target
