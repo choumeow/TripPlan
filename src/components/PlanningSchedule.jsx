@@ -4,6 +4,7 @@ import { partitionSchedule } from '../lib/schedule'
 import { categoryMeta } from '../lib/placeCategories'
 import { ViewToggle } from './ViewToggle'
 import { DayColumn } from './DayColumn'
+import { CalendarView } from './CalendarView'
 import styles from './PlanningSchedule.module.css'
 
 const STAY = { label: 'Stay', color: '#22C55E' }
@@ -28,7 +29,7 @@ export function PlanningSchedule({ trip, canEdit, onSetTime, onRemove }) {
       <div className={styles.head}>
         <ViewToggle view={view} onChange={setView} />
       </div>
-      {view === 'board' ? (
+      {view === 'board' && (
         <div className={styles.days}>
           {tripDays(trip).map((d) => (
             <DayColumn key={d.date} date={d.date} label={`Day ${d.index} · ${monthDay(d.date)}`}
@@ -36,8 +37,12 @@ export function PlanningSchedule({ trip, canEdit, onSetTime, onRemove }) {
               onSetTime={(card, patch) => onSetTime(card, patch)} onRemove={(card) => onRemove(card)} />
           ))}
         </div>
-      ) : (
-        <div className={styles.soon}>The {view} view is coming soon.</div>
+      )}
+      {view === 'calendar' && (
+        <CalendarView trip={trip} canEdit={canEdit} onSetTime={onSetTime} onRemove={onRemove} />
+      )}
+      {view === 'thread' && (
+        <div className={styles.soon}>The thread view is coming soon.</div>
       )}
     </section>
   )

@@ -2,6 +2,9 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { DndContext } from '@dnd-kit/core'
+
+vi.mock('./CalendarView', () => ({ CalendarView: () => <div>CalendarView</div> }))
+
 import { PlanningSchedule } from './PlanningSchedule'
 
 const trip = {
@@ -25,10 +28,15 @@ describe('PlanningSchedule', () => {
     expect(screen.getByText(/Day 3 · JUL 05/)).toBeInTheDocument()
     expect(screen.getByText('B')).toBeInTheDocument() // placed on Day 1
   })
-  it('switches to Calendar/Thread placeholders via the toggle', async () => {
+  it('switches to the Calendar view', async () => {
     renderSched()
     await userEvent.click(screen.getByRole('button', { name: 'Calendar' }))
-    expect(screen.getByText(/coming soon/i)).toBeInTheDocument()
+    expect(screen.getByText('CalendarView')).toBeInTheDocument()
     expect(screen.queryByText(/Day 1 · JUL 03/)).not.toBeInTheDocument()
+  })
+  it('shows a coming-soon placeholder for Thread', async () => {
+    renderSched()
+    await userEvent.click(screen.getByRole('button', { name: 'Thread' }))
+    expect(screen.getByText(/coming soon/i)).toBeInTheDocument()
   })
 })
