@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { TimeEditor } from './TimeEditor'
 import styles from './ScheduledCard.module.css'
 
 export function ScheduledCard({ card, canEdit, onSetTime, onRemove }) {
@@ -17,16 +18,7 @@ export function ScheduledCard({ card, canEdit, onSetTime, onRemove }) {
         </span>
       )}
       {editing && canEdit && (
-        <div className={styles.editor}>
-          <label className={styles.lbl}>Start
-            <input type="time" defaultValue={card.time ? card.time.slice(0, 5) : ''}
-              onChange={(e) => onSetTime({ startTime: e.target.value || null })} />
-          </label>
-          <label className={styles.lbl}>Mins
-            <input type="number" min="0" defaultValue={card.durationMin ?? ''}
-              onChange={(e) => onSetTime({ durationMin: e.target.value ? Number(e.target.value) : null })} />
-          </label>
-        </div>
+        <TimeEditor time={card.time} durationMin={card.durationMin} onChange={onSetTime} />
       )}
     </div>
   )
