@@ -1,12 +1,13 @@
-/* One scroll container: scrolls right for more days, down for more hours. */
-.wrap { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: auto; max-height: 560px; }
+/* One scroll container that hugs its columns (no empty trailing column) and scrolls
+   right for more days / down for more hours once they exceed the pane. */
+.wrap { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: auto; max-height: 560px; width: max-content; max-width: 100%; }
 /* Header (dates + parked) sticks to the top and scrolls horizontally WITH the body. */
-.headRow { display: grid; position: sticky; top: 0; z-index: 2; background: #fff; border-bottom: 1px solid var(--border); width: max-content; min-width: 100%; }
+.headRow { display: grid; position: sticky; top: 0; z-index: 2; background: #fff; border-bottom: 1px solid var(--border); width: max-content; }
 .corner { background: #fbfdff; position: sticky; left: 0; z-index: 1; }
 .dh { font-size: 12px; font-weight: 700; color: #334155; text-align: center; padding: 7px 0; background: #fbfdff; border-left: 1px solid var(--border); }
 .untlbl { font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-muted); text-align: right; padding: 5px 6px; background: #f8fafc; position: sticky; left: 0; z-index: 1; }
 .parked { min-height: 34px; padding: 4px; background: #f8fafc; border-left: 1px solid var(--border); border-top: 1px solid var(--border); }
-.body { display: grid; width: max-content; min-width: 100%; }
+.body { display: grid; width: max-content; }
 .gutter { display: flex; flex-direction: column; position: sticky; left: 0; z-index: 1; background: #fff; }
 .tlabel { font-size: 10px; color: var(--ink-muted); text-align: right; padding-right: 6px; border-top: 1px solid #f4f7fb; box-sizing: border-box; }
 .daycol { position: relative; border-left: 1px solid var(--border); }
