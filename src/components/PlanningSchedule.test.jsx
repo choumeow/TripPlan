@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { DndContext } from '@dnd-kit/core'
 
 vi.mock('./CalendarView', () => ({ CalendarView: () => <div>CalendarView</div> }))
+vi.mock('./ThreadView', () => ({ ThreadView: () => <div>ThreadView</div> }))
 
 import { PlanningSchedule } from './PlanningSchedule'
 
@@ -34,9 +35,10 @@ describe('PlanningSchedule', () => {
     expect(screen.getByText('CalendarView')).toBeInTheDocument()
     expect(screen.queryByText(/Day 1 · JUL 03/)).not.toBeInTheDocument()
   })
-  it('shows a coming-soon placeholder for Thread', async () => {
+  it('switches to the Thread view', async () => {
     renderSched()
     await userEvent.click(screen.getByRole('button', { name: 'Thread' }))
-    expect(screen.getByText(/coming soon/i)).toBeInTheDocument()
+    expect(screen.getByText('ThreadView')).toBeInTheDocument()
+    expect(screen.queryByText(/Day 1 · JUL 03/)).not.toBeInTheDocument()
   })
 })

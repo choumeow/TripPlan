@@ -5,6 +5,7 @@ import { categoryMeta } from '../lib/placeCategories'
 import { ViewToggle } from './ViewToggle'
 import { DayColumn } from './DayColumn'
 import { CalendarView } from './CalendarView'
+import { ThreadView } from './ThreadView'
 import styles from './PlanningSchedule.module.css'
 
 const STAY = { label: 'Stay', color: '#22C55E' }
@@ -42,7 +43,7 @@ export function PlanningSchedule({ trip, canEdit, onSetTime, onRemove }) {
         <CalendarView trip={trip} canEdit={canEdit} onSetTime={onSetTime} onRemove={onRemove} />
       )}
       {view === 'thread' && (
-        <div className={styles.soon}>The thread view is coming soon.</div>
+        <ThreadView trip={trip} canEdit={canEdit} onSetTime={onSetTime} onRemove={onRemove} />
       )}
     </section>
   )
