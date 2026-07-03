@@ -1,6 +1,8 @@
 // A trip's plan_items + local transport, wrapped into a common scheduled-item shape and
 // partitioned into the pending backlog vs each day. All pure — no @dnd-kit here.
 
+import { parseSlotId, minToTime } from './calendar'
+
 export function dndId(source, id) {
   return `${source === 'transport' ? 'tr' : 'plan'}:${id}`
 }
@@ -55,6 +57,11 @@ function arrayMove(list, from, to) {
 // Returns { updates: [{source,id,patch}] } to persist, or null for a no-op.
 export function computeDrop(activeId, overId, trip) {
   if (!overId || activeId === overId) return null
+  if (overId.startsWith('cal:')) {
+    const { source, id } = parseDndId(activeId)
+    const { date, min } = parseSlotId(overId)
+    return { updates: [{ source, id, patch: { scheduledDate: date, startTime: min === null ? null : minToTime(min) } }] }
+  }
   const { pending, byDay } = partitionSchedule(trip)
   const containers = [['pending', pending], ...Object.entries(byDay).map(([d, arr]) => [`day:${d}`, arr])]
   const listOf = (cid) => (cid === 'pending' ? pending : byDay[dayOf(cid)] ?? [])

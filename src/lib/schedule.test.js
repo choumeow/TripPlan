@@ -65,4 +65,12 @@ describe('computeDrop', () => {
     expect(computeDrop('plan:b', 'plan:b', trip)).toBeNull()
     expect(computeDrop('plan:b', undefined, trip)).toBeNull()
   })
+  it('schedules onto a calendar slot with a start time', () => {
+    const drop = computeDrop('plan:a', 'cal:2026-07-04:0930', trip)
+    expect(drop.updates).toEqual([{ source: 'plan', id: 'a', patch: { scheduledDate: '2026-07-04', startTime: '09:30' } }])
+  })
+  it('parks on a calendar day with no time (untimed target)', () => {
+    const drop = computeDrop('tr:t', 'cal:2026-07-04:untimed', trip)
+    expect(drop.updates).toEqual([{ source: 'transport', id: 't', patch: { scheduledDate: '2026-07-04', startTime: null } }])
+  })
 })
