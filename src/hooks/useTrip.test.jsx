@@ -29,6 +29,7 @@ describe('useTrip', () => {
     expect(from).toHaveBeenCalledWith('trips')
     expect(select).toHaveBeenCalledWith(expect.stringContaining('transport'))
     expect(select).toHaveBeenCalledWith(expect.stringContaining('plan_items'))
+    expect(select).toHaveBeenCalledWith(expect.stringContaining('packing_items'))
     expect(select).toHaveBeenCalledWith(expect.stringContaining('invite_status'))
     expect(eq).toHaveBeenCalledWith('id', 't1')
     expect(result.current.data.name).toBe('Tokyo')
