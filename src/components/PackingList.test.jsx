@@ -30,6 +30,13 @@ describe('PackingList', () => {
     await userEvent.click(screen.getByRole('button', { name: /add item/i }))
     expect(onAdd).toHaveBeenCalled()
   })
+  it('falls back to Unassigned when the assignee member cannot be resolved', () => {
+    const orphan = [{ id: 's3', scope: 'shared', category: 'gear', title: 'Cooler', packed: false, assignee_member_id: 'gone' }]
+    render(<PackingList title="Shared" glyph="🎒" scope="shared" items={orphan} members={members}
+      canAdd canManage hint="x" onAdd={vi.fn()} onToggle={vi.fn()} onEdit={vi.fn()} onRemove={vi.fn()} />)
+    expect(screen.getByText(/unassigned/i)).toBeInTheDocument()
+    expect(screen.queryByText(/guest/i)).not.toBeInTheDocument()
+  })
   it('shows an empty prompt when there are no items', () => {
     render(<PackingList title="Your list" glyph="🧳" scope="personal" items={[]} members={members}
       canAdd canManage hint="Private to you." onAdd={vi.fn()} onToggle={vi.fn()} onEdit={vi.fn()} onRemove={vi.fn()} />)

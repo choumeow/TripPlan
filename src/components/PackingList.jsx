@@ -33,18 +33,21 @@ export function PackingList({ title, glyph, scope, items, members, canAdd, canMa
                   <span aria-hidden="true">{meta.glyph}</span> {meta.label}
                   <span className={styles.catN}>{progress(g.items).packed}/{g.items.length}</span>
                 </div>
-                {g.items.map((it) => (
-                  <PackingItemRow
-                    key={it.id}
-                    item={it}
-                    showAssignee={showAssignee}
-                    assigneeName={it.assignee_member_id ? memberName(byId.get(it.assignee_member_id)) : null}
-                    canManage={canManage}
-                    onToggle={onToggle}
-                    onEdit={onEdit}
-                    onRemove={onRemove}
-                  />
-                ))}
+                {g.items.map((it) => {
+                  const assignee = it.assignee_member_id ? byId.get(it.assignee_member_id) : null
+                  return (
+                    <PackingItemRow
+                      key={it.id}
+                      item={it}
+                      showAssignee={showAssignee}
+                      assigneeName={assignee ? memberName(assignee) : null}
+                      canManage={canManage}
+                      onToggle={onToggle}
+                      onEdit={onEdit}
+                      onRemove={onRemove}
+                    />
+                  )
+                })}
               </div>
             )
           })}
