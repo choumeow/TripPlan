@@ -65,7 +65,7 @@ export function CalendarView({ trip, canEdit, onSetTime, onRemove }) {
   const days = tripDays(trip)
   const times = []
   for (let m = DAY_START; m <= DAY_END; m += SLOT) times.push(m)
-  const cols = `56px repeat(${days.length}, minmax(150px, 1fr))`
+  const cols = `56px repeat(${days.length}, 160px)`
   const timedFor = (date) => (byDay[date] ?? []).filter((i) => i.time).map(itemView)
   const untimedFor = (date) => (byDay[date] ?? []).filter((i) => !i.time).map(itemView)
 
@@ -79,15 +79,13 @@ export function CalendarView({ trip, canEdit, onSetTime, onRemove }) {
           <Parked key={d.date} date={d.date} items={untimedFor(d.date)} canEdit={canEdit} onSetTime={onSetTime} onRemove={onRemove} />
         ))}
       </div>
-      <div className={styles.bodyScroll}>
-        <div className={styles.body} style={{ gridTemplateColumns: cols }}>
-          <div className={styles.gutter}>
-            {times.map((m) => <div key={m} className={styles.tlabel} style={{ height: SLOT_PX }}>{minToTime(m)}</div>)}
-          </div>
-          {days.map((d) => (
-            <DayCol key={d.date} date={d.date} timed={timedFor(d.date)} canEdit={canEdit} onSetTime={onSetTime} onRemove={onRemove} />
-          ))}
+      <div className={styles.body} style={{ gridTemplateColumns: cols }}>
+        <div className={styles.gutter}>
+          {times.map((m) => <div key={m} className={styles.tlabel} style={{ height: SLOT_PX }}>{minToTime(m)}</div>)}
         </div>
+        {days.map((d) => (
+          <DayCol key={d.date} date={d.date} timed={timedFor(d.date)} canEdit={canEdit} onSetTime={onSetTime} onRemove={onRemove} />
+        ))}
       </div>
     </div>
   )
