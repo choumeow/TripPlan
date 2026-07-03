@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+// eslint-disable-next-line no-unused-vars
 const { eq, del, from } = vi.hoisted(() => {
   const eq = vi.fn()
   const del = vi.fn(() => ({ eq }))

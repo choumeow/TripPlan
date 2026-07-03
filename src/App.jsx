@@ -11,6 +11,7 @@ import { Dashboard } from './pages/Dashboard'
 import { TripWorkspace } from './pages/TripWorkspace'
 import { Overview } from './pages/Overview'
 import { Planning } from './pages/Planning'
+import { Packing } from './pages/Packing'
 import { ComingSoon } from './pages/ComingSoon'
 
 const queryClient = new QueryClient()
@@ -38,7 +39,7 @@ export default function App() {
                     <Route index element={<Navigate to="overview" replace />} />
                     <Route path="overview" element={<Overview />} />
                     <Route path="planning" element={<Planning />} />
-                    <Route path="packing" element={<ComingSoon section="Packing" />} />
+                    <Route path="packing" element={<Packing />} />
                     <Route path="finance" element={<ComingSoon section="Finance" />} />
                     <Route path="discussion" element={<ComingSoon section="Discussion" />} />
                   </Route>
