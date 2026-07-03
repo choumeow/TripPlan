@@ -1,0 +1,17 @@
+.row { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) 0; }
+.check { width: 20px; height: 20px; flex: none; border-radius: 6px; border: 2px solid var(--c-sky-100);
+  background: #fff; color: #fff; font-size: 12px; font-weight: 900; display: grid; place-items: center; cursor: pointer; }
+.check.on { background: var(--primary); border-color: var(--primary); }
+.check:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.glyph { font-size: 14px; }
+.title { font-size: 14px; color: var(--ink); min-width: 0; }
+.done .title { color: var(--ink-muted); text-decoration: line-through; }
+.spacer { margin-left: auto; }
+.chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600;
+  padding: 3px 10px; border-radius: 999px; background: var(--c-mist); color: var(--ink); white-space: nowrap; }
+.chip.unassigned { border: 1px dashed var(--c-sky-100); background: transparent; color: var(--ink-muted); }
+.act { display: inline-flex; gap: 2px; }
+.act button { border: 0; background: transparent; color: var(--ink-muted); cursor: pointer;
+  font-size: 13px; padding: 4px; border-radius: 6px; }
+.act button:hover { background: var(--c-mist); color: var(--ink); }
+.act button:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
