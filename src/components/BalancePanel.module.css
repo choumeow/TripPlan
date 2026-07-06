@@ -1,0 +1,13 @@
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; }
+.head { padding: 16px 18px 8px; }
+.h { font-family: var(--font-display); font-weight: 700; font-size: 15px; margin: 0; }
+.s { font-size: 11.5px; color: var(--ink-muted); margin: 2px 0 0; }
+.empty { color: #15803d; font-size: 13px; padding: 4px 18px 16px; }
+.cur { padding: 6px 18px 14px; }
+.curlbl { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-muted); font-weight: 700; padding: 10px 0 6px; border-bottom: 1px solid var(--c-line); }
+.liab { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid #f1f6fb; }
+.liab:first-of-type { border-top: 0; }
+.flow { font-size: 13px; }
+.n { margin-left: auto; font-family: var(--font-mono); font-weight: 700; font-size: 13px; font-variant-numeric: tabular-nums; }
+.chk { width: 26px; height: 26px; flex: none; border-radius: 8px; border: 2px solid var(--c-sky-100); background: #fff; color: #15803d; font-weight: 900; font-size: 14px; display: grid; place-items: center; cursor: pointer; }
+.chk:hover { background: #f0fdf4; }
