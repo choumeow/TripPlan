@@ -17,7 +17,7 @@ export function BudgetTotals({ totals }) {
             <div className={styles.line}><span>Budget</span><span className={styles.n}>{formatMoney(t.budgeted, c)}</span></div>
             <div className={`${styles.line} ${over ? styles.over : styles.under}`}>
               <span>{over ? 'Over by' : 'Under by'}</span>
-              <span className={styles.n}>{formatMoney(Math.abs(t.delta), c)} {over ? 'over' : 'under'}</span>
+              <span className={styles.n}>{formatMoney(Math.abs(t.delta), c)}</span>
             </div>
           </div>
         )

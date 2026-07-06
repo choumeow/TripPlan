@@ -34,4 +34,11 @@ describe('CategoryEditorModal', () => {
     await userEvent.click(screen.getByRole('button', { name: /save category/i }))
     expect(mutate).toHaveBeenCalledWith(expect.objectContaining({ id: 'c1', name: 'Meal' }), expect.any(Object))
   })
+  it('clearing a budget field on edit sends a blank so the hook deletes that budget row', async () => {
+    const category = { id: 'c1', name: 'Meal', category_budgets: [{ currency: 'JPY', amount: 40000 }] }
+    render(<CategoryEditorModal tripId="t1" trip={trip} memberId="m1" category={category} onClose={vi.fn()} />)
+    await userEvent.clear(screen.getByLabelText(/destination budget/i))
+    await userEvent.click(screen.getByRole('button', { name: /save category/i }))
+    expect(mutate).toHaveBeenCalledWith(expect.objectContaining({ id: 'c1', budgets: { MYR: '', JPY: '' } }), expect.any(Object))
+  })
 })

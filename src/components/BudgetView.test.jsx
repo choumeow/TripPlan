@@ -32,4 +32,11 @@ describe('BudgetView', () => {
     render(<BudgetView trip={emptyTrip} canManage={false} onAdd={vi.fn()} onEdit={vi.fn()} onRemove={vi.fn()} onSeed={vi.fn()} />)
     expect(screen.queryByRole('button', { name: /new category/i })).not.toBeInTheDocument()
   })
+  it('is read-only for a viewer on a non-empty budget (no add or per-card edit/remove)', () => {
+    render(<BudgetView trip={tripWithCats} canManage={false} onAdd={vi.fn()} onEdit={vi.fn()} onRemove={vi.fn()} onSeed={vi.fn()} />)
+    expect(screen.getByText('Meal')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /new category/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /edit meal/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /remove meal/i })).not.toBeInTheDocument()
+  })
 })
