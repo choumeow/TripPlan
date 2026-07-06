@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../lib/supabaseClient'
 
 const TRIP_SELECT =
-  '*, trip_members(id, user_id, display_name, role, invite_status, profiles(display_name, avatar_url)), transport(*), plan_items(*), packing_items(*)'
+  '*, trip_members(id, user_id, display_name, role, invite_status, profiles(display_name, avatar_url)), transport(*), plan_items(*), packing_items(*), expenses(*, expense_splits(*)), budget_categories(*, category_budgets(*)), settlements(*)'
 
 export function useTrip(tripId) {
   return useQuery({
