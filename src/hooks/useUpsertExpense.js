@@ -6,7 +6,7 @@ export function useUpsertExpense(tripId) {
   return useMutation({
     mutationFn: async (input) => {
       if (input.scope === 'team') {
-        const { error } = await supabase.rpc('record_expense', {
+        const { data, error } = await supabase.rpc('record_expense', {
           p_expense_id: input.id ?? null,
           p_trip_id: tripId,
           p_description: input.description,
@@ -19,7 +19,7 @@ export function useUpsertExpense(tripId) {
           p_splits: input.splits,
         })
         if (error) throw error
-        return
+        return data
       }
       const { id, ...fields } = input
       const query = id

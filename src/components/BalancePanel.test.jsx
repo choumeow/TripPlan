@@ -22,4 +22,16 @@ describe('BalancePanel', () => {
     render(<BalancePanel expenses={[]} settlements={[]} members={members} canSettle={() => true} onSettle={vi.fn()} />)
     expect(screen.getByText(/all settled/i)).toBeInTheDocument()
   })
+  it('keeps debts independent per currency (no conversion)', () => {
+    // JPY: A paid 6000 split evenly → B owes A ¥3,000. MYR: B paid 100 split evenly → A owes B RM50.
+    const twoCur = [
+      { id: 'e1', scope: 'team', currency: 'JPY', paid_by: 'A', total_amount: 6000, expense_splits: [{ member_id: 'A', amount: 3000 }, { member_id: 'B', amount: 3000 }] },
+      { id: 'e2', scope: 'team', currency: 'MYR', paid_by: 'B', total_amount: 100, expense_splits: [{ member_id: 'A', amount: 50 }, { member_id: 'B', amount: 50 }] },
+    ]
+    render(<BalancePanel expenses={twoCur} settlements={[]} members={members} canSettle={() => true} onSettle={vi.fn()} />)
+    expect(screen.getByText('In JPY')).toBeInTheDocument()
+    expect(screen.getByText('In MYR')).toBeInTheDocument()
+    expect(screen.getByText('¥3,000')).toBeInTheDocument()  // B → A, JPY only
+    expect(screen.getByText('RM50')).toBeInTheDocument()     // A → B, MYR only — opposite direction, never merged
+  })
 })

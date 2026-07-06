@@ -28,6 +28,12 @@ describe('Finance', () => {
     render(<Finance />)
     expect(screen.getByRole('button', { name: /add expense/i })).toBeInTheDocument()
   })
+  it('a viewer does not see + Add expense', () => {
+    ctx = { trip: { ...baseTrip, trip_members: [...baseTrip.trip_members, { id: 'C', user_id: 'uC', role: 'viewer', display_name: 'Cara' }] } }
+    authUser = { id: 'uC' }
+    render(<Finance />)
+    expect(screen.queryByRole('button', { name: /add expense/i })).not.toBeInTheDocument()
+  })
   it('gates the page when trip currencies are unset', () => {
     ctx = { trip: { ...baseTrip, departure_currency: null, destination_currency: null } }
     render(<Finance />)
