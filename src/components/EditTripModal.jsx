@@ -1,11 +1,17 @@
 import { useState } from 'react'
 import { Modal } from './Modal'
 import { useUpdateTrip } from '../hooks/useUpdateTrip'
+import { CURRENCY_CODES, currencyMeta } from '../lib/currencies'
 import styles from './EditTripModal.module.css'
 
 export function EditTripModal({ onClose, trip }) {
   const [form, setForm] = useState({
-    name: trip.name, place: trip.place, startDate: trip.start_date, endDate: trip.end_date,
+    name: trip.name,
+    place: trip.place,
+    startDate: trip.start_date,
+    endDate: trip.end_date,
+    departureCurrency: trip.departure_currency ?? 'MYR',
+    destinationCurrency: trip.destination_currency ?? 'JPY',
   })
   const [error, setError] = useState('')
   const { mutate, isPending } = useUpdateTrip(trip.id)
@@ -27,7 +33,7 @@ export function EditTripModal({ onClose, trip }) {
     }
     setError('')
     mutate(
-      { name: name.trim(), place: place.trim(), startDate, endDate },
+      { name: name.trim(), place: place.trim(), startDate, endDate, departure_currency: form.departureCurrency, destination_currency: form.destinationCurrency },
       { onSuccess: onClose, onError: () => setError('Could not save changes. Please try again.') },
     )
   }
@@ -54,6 +60,21 @@ export function EditTripModal({ onClose, trip }) {
             <div className={styles.col}>
               <label className={styles.label} htmlFor="e-end">End date</label>
               <input id="e-end" type="date" className={styles.input} value={form.endDate} onChange={set('endDate')} />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div className={styles.col}>
+              <label className={styles.label} htmlFor="e-dep">Home currency</label>
+              <select id="e-dep" className={styles.input} value={form.departureCurrency} onChange={set('departureCurrency')}>
+                {CURRENCY_CODES.map((c) => <option key={c} value={c}>{c} — {currencyMeta(c).name}</option>)}
+              </select>
+            </div>
+            <div className={styles.col}>
+              <label className={styles.label} htmlFor="e-dest">Destination currency</label>
+              <select id="e-dest" className={styles.input} value={form.destinationCurrency} onChange={set('destinationCurrency')}>
+                {CURRENCY_CODES.map((c) => <option key={c} value={c}>{c} — {currencyMeta(c).name}</option>)}
+              </select>
             </div>
           </div>
 

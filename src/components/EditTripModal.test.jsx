@@ -10,11 +10,14 @@ const trip = { name: 'Tokyo', place: 'Tokyo, Japan', start_date: '2026-07-12', e
 
 beforeEach(() => vi.clearAllMocks())
 
-function setup(mutate = vi.fn()) {
+function setup(fn = vi.fn()) {
+  mutate = fn
   useUpdateTrip.mockReturnValue({ mutate, isPending: false })
   render(<EditTripModal onClose={vi.fn()} trip={trip} />)
   return mutate
 }
+
+let mutate
 
 describe('EditTripModal', () => {
   it('pre-fills the form from the trip', () => {
@@ -44,8 +47,17 @@ describe('EditTripModal', () => {
     const mutate = setup()
     await userEvent.click(screen.getByRole('button', { name: /save/i }))
     expect(mutate).toHaveBeenCalledWith(
-      { name: 'Tokyo', place: 'Tokyo, Japan', startDate: '2026-07-12', endDate: '2026-07-19' },
+      expect.objectContaining({ name: 'Tokyo', place: 'Tokyo, Japan', startDate: '2026-07-12', endDate: '2026-07-19' }),
       expect.any(Object),
     )
+  })
+
+  it('lets the host change the trip currencies', async () => {
+    mutate = vi.fn()
+    useUpdateTrip.mockReturnValue({ mutate, isPending: false })
+    render(<EditTripModal isOpen trip={{ id: 't1', name: 'Tokyo', place: 'Japan', start_date: '2026-11-08', end_date: '2026-11-15', departure_currency: 'MYR', destination_currency: 'JPY' }} onClose={vi.fn()} />)
+    await userEvent.selectOptions(screen.getByLabelText(/destination currency/i), 'THB')
+    await userEvent.click(screen.getByRole('button', { name: /save/i }))
+    expect(mutate).toHaveBeenCalledWith(expect.objectContaining({ destination_currency: 'THB' }), expect.any(Object))
   })
 })
