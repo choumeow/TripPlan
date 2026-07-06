@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { netByMember, simplify, pairwiseDebts, myDebts } from './balances'
+import { netByMember, pairwiseDebts, myDebts } from './balances'
 
 // A paid 12000, split equally among A,B,C,D (3000 each) → B,C,D each owe A 3000.
 const expenses = [{

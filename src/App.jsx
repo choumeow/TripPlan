@@ -12,6 +12,7 @@ import { TripWorkspace } from './pages/TripWorkspace'
 import { Overview } from './pages/Overview'
 import { Planning } from './pages/Planning'
 import { Packing } from './pages/Packing'
+import { Finance } from './pages/Finance'
 import { ComingSoon } from './pages/ComingSoon'
 
 const queryClient = new QueryClient()
@@ -40,7 +41,7 @@ export default function App() {
                     <Route path="overview" element={<Overview />} />
                     <Route path="planning" element={<Planning />} />
                     <Route path="packing" element={<Packing />} />
-                    <Route path="finance" element={<ComingSoon section="Finance" />} />
+                    <Route path="finance" element={<Finance />} />
                     <Route path="discussion" element={<ComingSoon section="Discussion" />} />
                   </Route>
                 </Route>
