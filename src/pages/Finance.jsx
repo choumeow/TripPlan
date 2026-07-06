@@ -5,9 +5,14 @@ import { callerMember, canWrite } from '../lib/tripAccess'
 import { ExpenseRow } from '../components/ExpenseRow'
 import { BalancePanel } from '../components/BalancePanel'
 import { ExpenseEditorModal } from '../components/ExpenseEditorModal'
+import { BudgetView } from '../components/BudgetView'
+import { CategoryEditorModal } from '../components/CategoryEditorModal'
 import { useSettleDebt } from '../hooks/useSettleDebt'
 import { useDeleteExpense } from '../hooks/useDeleteExpense'
+import { useDeleteCategory } from '../hooks/useDeleteCategory'
+import { useSeedStarterCategories } from '../hooks/useSeedStarterCategories'
 import { memberName } from '../lib/display'
+import { STARTER_CATEGORIES } from '../lib/budget'
 import styles from './Finance.module.css'
 
 const VIEWS = [{ id: 'team', label: '🧾 Team' }, { id: 'budget', label: '📊 Budget' }, { id: 'ind', label: '🧍 Individual' }]
@@ -21,6 +26,9 @@ export function Finance() {
   const [editor, setEditor] = useState(null)
   const settle = useSettleDebt(trip.id)
   const del = useDeleteExpense(trip.id)
+  const [catEditor, setCatEditor] = useState(null)
+  const delCat = useDeleteCategory(trip.id)
+  const seedCats = useSeedStarterCategories(trip.id)
 
   const hasCurrencies = !!trip.departure_currency && !!trip.destination_currency
   const members = trip.trip_members ?? []
@@ -43,6 +51,11 @@ export function Finance() {
     settle.mutate({ from_member: d.from, to_member: d.to, currency: d.currency, amount: d.amount, createdBy: me?.id ?? null })
   }
   function onRemove(exp) { if (window.confirm('Remove this expense?')) del.mutate(exp.id) }
+  function onRemoveCategory(cat) { if (window.confirm('Delete this category? Its expenses become uncategorized.')) delCat.mutate(cat.id) }
+  function onSeedCategories() {
+    const existing = (trip.budget_categories ?? []).map((c) => c.name)
+    seedCats.mutate({ createdBy: me?.id ?? null, existingNames: existing.filter((n) => STARTER_CATEGORIES.includes(n)) })
+  }
 
   return (
     <section className={styles.wrap}>
@@ -71,11 +84,19 @@ export function Finance() {
           <BalancePanel expenses={teamExpenses} settlements={trip.settlements ?? []} members={members} canSettle={canSettle} onSettle={onSettle} />
         </div>
       )}
-      {view === 'budget' && <p className={styles.soon}>📊 Budget arrives in slice 5b.</p>}
+      {view === 'budget' && (
+        <BudgetView trip={trip} canManage={isWriter}
+          onAdd={() => setCatEditor({ category: null })}
+          onEdit={(cat) => setCatEditor({ category: cat })}
+          onRemove={onRemoveCategory} onSeed={onSeedCategories} />
+      )}
       {view === 'ind' && <p className={styles.soon}>🧍 Individual arrives in slice 5c.</p>}
 
       {editor && (
         <ExpenseEditorModal tripId={trip.id} trip={trip} memberId={me?.id ?? null} expense={editor.expense} onClose={() => setEditor(null)} />
+      )}
+      {catEditor && (
+        <CategoryEditorModal tripId={trip.id} trip={trip} memberId={me?.id ?? null} category={catEditor.category} onClose={() => setCatEditor(null)} />
       )}
     </section>
   )

@@ -1,10 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 const settle = vi.fn(), del = vi.fn()
 vi.mock('../hooks/useSettleDebt', () => ({ useSettleDebt: () => ({ mutate: settle }) }))
 vi.mock('../hooks/useDeleteExpense', () => ({ useDeleteExpense: () => ({ mutate: del }) }))
 vi.mock('../hooks/useUpsertExpense', () => ({ useUpsertExpense: () => ({ mutate: vi.fn(), isPending: false }) }))
+vi.mock('../hooks/useUpsertCategory', () => ({ useUpsertCategory: () => ({ mutate: vi.fn(), isPending: false }) }))
+vi.mock('../hooks/useDeleteCategory', () => ({ useDeleteCategory: () => ({ mutate: vi.fn() }) }))
+vi.mock('../hooks/useSeedStarterCategories', () => ({ useSeedStarterCategories: () => ({ mutate: vi.fn() }) }))
 let ctx, authUser
 vi.mock('react-router-dom', () => ({ useOutletContext: () => ctx }))
 vi.mock('../auth/AuthContext', () => ({ useAuth: () => ({ user: authUser }) }))
@@ -38,5 +42,12 @@ describe('Finance', () => {
     ctx = { trip: { ...baseTrip, departure_currency: null, destination_currency: null } }
     render(<Finance />)
     expect(screen.getByText(/set your trip currencies/i)).toBeInTheDocument()
+  })
+  it('renders the Budget view when the Budget tab is selected', async () => {
+    ctx = { trip: { ...baseTrip, budget_categories: [{ id: 'c1', name: 'Meal', category_budgets: [{ currency: 'JPY', amount: 40000 }] }] } }
+    render(<Finance />)
+    await userEvent.click(screen.getByRole('tab', { name: /budget/i }))
+    expect(screen.getByText('Meal')).toBeInTheDocument()
+    expect(screen.getByText('Budget total')).toBeInTheDocument()
   })
 })

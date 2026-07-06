@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-const { from, insert, update, upsert, del, updateEq, delEq2 } = vi.hoisted(() => {
+const { from, insert, update, upsert, del, updateEq } = vi.hoisted(() => {
   const single = vi.fn().mockResolvedValue({ data: { id: 'c1' }, error: null })
   const select = vi.fn(() => ({ single }))
   const insert = vi.fn(() => ({ select }))
@@ -13,7 +13,7 @@ const { from, insert, update, upsert, del, updateEq, delEq2 } = vi.hoisted(() =>
   const delEq1 = vi.fn(() => ({ eq: delEq2 }))
   const del = vi.fn(() => ({ eq: delEq1 }))
   const from = vi.fn(() => ({ insert, update, upsert, delete: del }))
-  return { from, insert, update, upsert, del, updateEq, delEq2 }
+  return { from, insert, update, upsert, del, updateEq }
 })
 vi.mock('../lib/supabaseClient', () => ({ supabase: { from } }))
 
