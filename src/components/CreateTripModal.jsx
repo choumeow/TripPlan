@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Modal } from './Modal'
 import { useCreateTrip } from '../hooks/useCreateTrip'
+import { CURRENCY_CODES, currencyMeta } from '../lib/currencies'
 import styles from './CreateTripModal.module.css'
 
-const EMPTY = { name: '', place: '', startDate: '', endDate: '' }
+const EMPTY = { name: '', place: '', startDate: '', endDate: '', departureCurrency: 'MYR', destinationCurrency: 'JPY' }
 
 export function CreateTripModal({ isOpen, onClose }) {
   const [form, setForm] = useState(EMPTY)
@@ -27,7 +28,7 @@ export function CreateTripModal({ isOpen, onClose }) {
     }
     setError('')
     mutate(
-      { name: name.trim(), place: place.trim(), startDate, endDate },
+      { name: name.trim(), place: place.trim(), startDate, endDate, departureCurrency: form.departureCurrency, destinationCurrency: form.destinationCurrency },
       {
         onSuccess: () => {
           setForm(EMPTY)
@@ -60,6 +61,21 @@ export function CreateTripModal({ isOpen, onClose }) {
             <div className={styles.col}>
               <label className={styles.label} htmlFor="t-end">End date</label>
               <input id="t-end" type="date" className={styles.input} value={form.endDate} onChange={set('endDate')} />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div className={styles.col}>
+              <label className={styles.label} htmlFor="t-dep">Home currency</label>
+              <select id="t-dep" className={styles.input} value={form.departureCurrency} onChange={set('departureCurrency')}>
+                {CURRENCY_CODES.map((c) => <option key={c} value={c}>{c} — {currencyMeta(c).name}</option>)}
+              </select>
+            </div>
+            <div className={styles.col}>
+              <label className={styles.label} htmlFor="t-dest">Destination currency</label>
+              <select id="t-dest" className={styles.input} value={form.destinationCurrency} onChange={set('destinationCurrency')}>
+                {CURRENCY_CODES.map((c) => <option key={c} value={c}>{c} — {currencyMeta(c).name}</option>)}
+              </select>
             </div>
           </div>
 

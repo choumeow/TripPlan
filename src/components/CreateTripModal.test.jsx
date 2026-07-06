@@ -47,7 +47,19 @@ describe('CreateTripModal', () => {
     fill({ name: 'Tokyo', place: 'Tokyo, Japan', start: '2026-07-12', end: '2026-07-19' })
     await userEvent.click(screen.getByRole('button', { name: /create trip/i }))
     expect(mutate).toHaveBeenCalledWith(
-      { name: 'Tokyo', place: 'Tokyo, Japan', startDate: '2026-07-12', endDate: '2026-07-19' },
+      expect.objectContaining({ name: 'Tokyo', place: 'Tokyo, Japan', startDate: '2026-07-12', endDate: '2026-07-19' }),
+      expect.any(Object),
+    )
+  })
+
+  it('submits the chosen currencies', async () => {
+    const mutate = setup()
+    fill({ name: 'Tokyo', place: 'Japan', start: '2026-11-08', end: '2026-11-15' })
+    await userEvent.selectOptions(screen.getByLabelText(/home currency/i), 'MYR')
+    await userEvent.selectOptions(screen.getByLabelText(/destination currency/i), 'JPY')
+    await userEvent.click(screen.getByRole('button', { name: /create trip/i }))
+    expect(mutate).toHaveBeenCalledWith(
+      expect.objectContaining({ departureCurrency: 'MYR', destinationCurrency: 'JPY' }),
       expect.any(Object),
     )
   })

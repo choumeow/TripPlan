@@ -24,12 +24,14 @@ describe('useCreateTrip', () => {
     const { result } = renderHook(() => useCreateTrip(), { wrapper })
     result.current.mutate({
       name: 'Tokyo', place: 'Tokyo, Japan', startDate: '2026-07-12', endDate: '2026-07-19',
+      departureCurrency: 'MYR', destinationCurrency: 'JPY',
     })
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
-    expect(rpc).toHaveBeenCalledWith('create_trip', {
+    expect(rpc).toHaveBeenCalledWith('create_trip', expect.objectContaining({
       p_name: 'Tokyo', p_place: 'Tokyo, Japan', p_start: '2026-07-12', p_end: '2026-07-19',
-    })
+      p_departure_currency: 'MYR', p_destination_currency: 'JPY',
+    }))
   })
 
   it('surfaces an RPC error', async () => {
