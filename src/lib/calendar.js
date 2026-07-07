@@ -26,6 +26,13 @@ export function parseSlotId(id) {
   return { date, min: Number(tail.slice(0, 2)) * 60 + Number(tail.slice(2)) }
 }
 
+// New duration (minutes) for a block resized to `rawMin`, snapped to the 30-min grid,
+// floored at one slot, and clamped so the block never runs past midnight.
+export function resizeDuration(startMin, rawMin) {
+  const snapped = Math.max(SLOT, Math.round(rawMin / SLOT) * SLOT)
+  return Math.min(snapped, 1440 - startMin)
+}
+
 // [{ id, startMin, durMin }] -> same + { col, colCount }, packing overlaps side by side.
 export function calendarLayout(items) {
   const sorted = items.slice().sort((a, b) => a.startMin - b.startMin || a.durMin - b.durMin)

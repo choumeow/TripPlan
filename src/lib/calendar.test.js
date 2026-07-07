@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { DAY_START, DAY_END, SLOT, timeToMin, minToTime, slotId, parseSlotId, calendarLayout } from './calendar'
+import { DAY_START, DAY_END, SLOT, timeToMin, minToTime, slotId, parseSlotId, calendarLayout, resizeDuration } from './calendar'
 
 describe('time helpers', () => {
   it('has a full-day 30-min grid', () => {
@@ -44,5 +44,19 @@ describe('calendarLayout (overlap columns)', () => {
       { id: 'b', startMin: 600, durMin: 60 }, // 10:00–11:00 (touches, no overlap)
     ])
     expect(laid.every((x) => x.colCount === 1)).toBe(true)
+  })
+})
+
+describe('resizeDuration', () => {
+  it('snaps to the nearest 30-min slot', () => {
+    expect(resizeDuration(540, 105)).toBe(120) // 09:00 start, 105 → 120
+    expect(resizeDuration(540, 100)).toBe(90)  // 100 → 90
+  })
+  it('floors at one slot (never below 30 min)', () => {
+    expect(resizeDuration(540, 5)).toBe(30)
+    expect(resizeDuration(540, -20)).toBe(30)
+  })
+  it('never extends past midnight (1440 − start)', () => {
+    expect(resizeDuration(1380, 200)).toBe(60) // 23:00 start → cap at 60 min
   })
 })
