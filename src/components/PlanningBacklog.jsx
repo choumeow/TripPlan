@@ -56,8 +56,8 @@ function transportCard(trip, leg) {
 export function PlanningBacklog({ trip, canEdit, onEdit, onRemove }) {
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
-  const items = trip.plan_items ?? []
-  const locals = (trip.transport ?? []).filter((t) => t.category === 'local')
+  const items = (trip.plan_items ?? []).filter((i) => !i.scheduled_date)
+  const locals = (trip.transport ?? []).filter((t) => t.category === 'local' && !t.depart_date)
 
   const groups = [
     { key: 'places', icon: '📍', label: 'Places',

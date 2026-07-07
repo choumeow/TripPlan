@@ -34,6 +34,24 @@ describe('PlanningBacklog', () => {
     expect(screen.queryByText(/KUL/)).not.toBeInTheDocument()     // journey excluded
   })
 
+  it('excludes items that are already scheduled (they live in the schedule, not the backlog)', () => {
+    const scheduledTrip = {
+      ...trip,
+      plan_items: [
+        ...trip.plan_items,
+        { id: 'p3', kind: 'place', category: 'museum', title: 'Scheduled Museum', scheduled_date: '2026-07-04', created_by: 'm1' },
+      ],
+      transport: [
+        ...trip.transport,
+        { id: 'l2', category: 'local', method: 'subway', from_text: 'C', to_text: 'D', depart_date: '2026-07-04', created_by: 'm1' },
+      ],
+    }
+    render(<PlanningBacklog trip={scheduledTrip} canEdit={false} onEdit={vi.fn()} onRemove={vi.fn()} />)
+    expect(screen.getByText('TNM')).toBeInTheDocument()                  // unscheduled still shows
+    expect(screen.queryByText('Scheduled Museum')).not.toBeInTheDocument()
+    expect(screen.queryByText(/^C → D/)).not.toBeInTheDocument()
+  })
+
   it('clamps the date filter to the trip window and dims closed places', async () => {
     render(<PlanningBacklog trip={trip} canEdit={false} onEdit={vi.fn()} onRemove={vi.fn()} />)
     const date = screen.getByLabelText(/available on/i)
