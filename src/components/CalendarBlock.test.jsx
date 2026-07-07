@@ -40,4 +40,23 @@ describe('CalendarBlock', () => {
     renderBlock({ canEdit: false })
     expect(screen.queryByRole('button', { name: /remove/i })).not.toBeInTheDocument()
   })
+  it('resizes a plan block via the bottom handle and persists a snapped duration', () => {
+    const onSetTime = vi.fn()
+    renderBlock({ onSetTime })
+    const handle = screen.getByTestId('resize')
+    fireEvent.pointerDown(handle, { clientY: 100, pointerId: 1 })
+    fireEvent.pointerMove(handle, { clientY: 145, pointerId: 1 }) // +45px → 60+45=105 → snap 120
+    fireEvent.pointerUp(handle, { clientY: 145, pointerId: 1 })
+    expect(onSetTime).toHaveBeenCalledWith({ durationMin: 120 })
+  })
+  it('shows no resize handle for transport or for viewers', () => {
+    const { rerender } = renderBlock({ card: { ...card, source: 'transport' } })
+    expect(screen.queryByTestId('resize')).not.toBeInTheDocument()
+    rerender(
+      <DndContext>
+        <CalendarBlock card={card} style={{}} canEdit={false} onSetTime={vi.fn()} onRemove={vi.fn()} />
+      </DndContext>,
+    )
+    expect(screen.queryByTestId('resize')).not.toBeInTheDocument()
+  })
 })
