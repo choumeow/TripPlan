@@ -37,7 +37,7 @@ export function Overview() {
             <span>BOARDING PASS</span>
             <span className={styles.code}>{trip.code}</span>
           </div>
-          {canEdit && (
+          {canManage && (
             <button type="button" className={styles.edit} onClick={() => setEditing(true)}>✎ Edit</button>
           )}
           <h1 className={styles.dest}>{trip.name}</h1>

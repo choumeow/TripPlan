@@ -57,8 +57,10 @@ describe('Overview', () => {
     expect(screen.getByText('EditTripModal')).toBeInTheDocument()
   })
 
-  it('hides Edit for a non-writer', () => {
+  it('hides trip-info Edit for an editor (host-only) and a viewer', () => {
     useAuth.mockReturnValue({ user: { id: 'u1' } })
+    renderOverview({ ...trip, trip_members: [{ id: 'm1', user_id: 'u1', role: 'editor' }] })
+    expect(screen.queryByRole('button', { name: /edit/i })).not.toBeInTheDocument()
     renderOverview({ ...trip, trip_members: [{ id: 'm1', user_id: 'u1', role: 'viewer' }] })
     expect(screen.queryByRole('button', { name: /edit/i })).not.toBeInTheDocument()
   })

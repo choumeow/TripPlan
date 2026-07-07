@@ -40,7 +40,7 @@ export function Finance() {
       <section className={styles.wrap}>
         <div className={styles.gate}>
           <h2 className={styles.gateTitle}>Set your trip currencies</h2>
-          <p className={styles.gateText}>Finance needs a home (departure) and destination currency for this trip. {isWriter ? 'Open the trip’s Edit dialog to set them.' : 'Ask the host to set them in the trip settings.'}</p>
+          <p className={styles.gateText}>Finance needs a home (departure) and destination currency for this trip. {me?.role === 'host' ? 'Open the trip’s Edit dialog to set them.' : 'Ask the host to set them in the trip settings.'}</p>
         </div>
       </section>
     )
