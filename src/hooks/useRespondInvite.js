@@ -15,5 +15,9 @@ export function useRespondInvite() {
       queryClient.invalidateQueries({ queryKey: ['trips', user?.id] })
       queryClient.invalidateQueries({ queryKey: ['trip', tripId] })
     },
+    // Refresh the invite bar after success *and* failure (a failure is usually a stale
+    // invite: revoked, or answered elsewhere). Returning the promise keeps the mutation
+    // pending until the list has refetched, so an answered invite never shows live buttons.
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ['invites', user?.id] }),
   })
 }
