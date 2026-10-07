@@ -2,29 +2,33 @@ import { Link, Outlet } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { Logo } from './Logo'
 import { NotificationBell } from './NotificationBell'
+import { InviteBar } from './InviteBar'
 import styles from './DashboardLayout.module.css'
 
 /**
  * Shell for in-app pages (Dashboard and later subsystems): a sticky top bar
- * with the brand, a notification bell, and sign-out, over a full-width content
- * container. Pages render into <Outlet/>.
+ * with the brand, a notification bell, and sign-out, plus the pending-invite
+ * bar under it, over a full-width content container. Pages render into <Outlet/>.
  */
 export function DashboardLayout() {
   const { signOut } = useAuth()
   return (
     <div className={styles.shell}>
-      <header className={styles.topbar}>
-        <Link to="/" className={styles.brand}>
-          <Logo className={styles.logo} />
-          TripPlan
-        </Link>
-        <div className={styles.actions}>
-          <NotificationBell />
-          <button type="button" className={styles.signout} onClick={signOut}>
-            Sign out
-          </button>
-        </div>
-      </header>
+      <div className={styles.top}>
+        <header className={styles.topbar}>
+          <Link to="/" className={styles.brand}>
+            <Logo className={styles.logo} />
+            TripPlan
+          </Link>
+          <div className={styles.actions}>
+            <NotificationBell />
+            <button type="button" className={styles.signout} onClick={signOut}>
+              Sign out
+            </button>
+          </div>
+        </header>
+        <InviteBar />
+      </div>
       <main className={styles.main}>
         <div className={styles.container}>
           <Outlet />

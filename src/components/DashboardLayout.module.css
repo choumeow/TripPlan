@@ -7,10 +7,16 @@
     var(--bg);
 }
 
-.topbar {
+/* The header and the invite bar stick together, so a pending invite stays in view. */
+.top {
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+.topbar {
+  position: relative;
+  z-index: 1; /* keeps the bell's dropdown above the invite bar */
   display: flex;
   align-items: center;
   justify-content: space-between;

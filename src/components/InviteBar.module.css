@@ -1,0 +1,129 @@
+.bar {
+  background: #fff7ed;
+  border-bottom: 1px solid #fed7aa;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2) var(--space-5);
+  max-height: min(50vh, 360px);
+  overflow-y: auto;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-1) 0;
+}
+
+.row + .row {
+  margin-top: var(--space-1);
+  padding-top: var(--space-2);
+  border-top: 1px solid #fed7aa;
+}
+
+.icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffedd5;
+  color: var(--accent-strong);
+  font-size: 14px;
+}
+
+/* Text, actions and toggle share one wrapping line; on a narrow screen the buttons
+   drop below the text, still indented past the icon. */
+.body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.text {
+  flex: 1 1 220px;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.actions {
+  flex: none;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.accept,
+.decline {
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.accept {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.accept:hover:not(:disabled) {
+  background: var(--primary-strong);
+  border-color: var(--primary-strong);
+}
+
+.decline {
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.decline:hover:not(:disabled) {
+  color: var(--primary-strong);
+  border-color: var(--primary);
+}
+
+.accept:disabled,
+.decline:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.toggle {
+  flex: none;
+  padding: 5px var(--space-1);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-strong);
+  background: transparent;
+  border: 0;
+}
+
+.toggle:hover {
+  text-decoration: underline;
+}
+
+.err {
+  flex-basis: 100%;
+  font-size: 13px;
+  color: var(--c-danger);
+}
+
+/* On one line, put the toggle before the buttons so every row's buttons line up. */
+@media (min-width: 640px) {
+  .actions { order: 1; }
+  .err { order: 2; }
+}

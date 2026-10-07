@@ -7,6 +7,9 @@ vi.mock('../auth/AuthContext', () => ({ useAuth: vi.fn() }))
 vi.mock('./NotificationBell', () => ({
   NotificationBell: () => <button type="button" aria-label="Notifications" />,
 }))
+vi.mock('./InviteBar', () => ({
+  InviteBar: () => <section aria-label="Trip invitations" />,
+}))
 import { useAuth } from '../auth/AuthContext'
 import { DashboardLayout } from './DashboardLayout'
 
@@ -25,13 +28,14 @@ function renderApp() {
 beforeEach(() => vi.clearAllMocks())
 
 describe('DashboardLayout', () => {
-  it('renders the brand, a notifications button, and the page outlet', () => {
+  it('renders the brand, a notifications button, the invite bar, and the page outlet', () => {
     useAuth.mockReturnValue({ signOut: vi.fn() })
     renderApp()
     expect(screen.getByText('TripPlan')).toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: /notifications/i }),
     ).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: /trip invitations/i })).toBeInTheDocument()
     expect(screen.getByText('Trips content')).toBeInTheDocument()
   })
 
