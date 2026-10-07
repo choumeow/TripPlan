@@ -46,22 +46,39 @@ describe('InviteBar', () => {
     expect(respond).toHaveBeenCalledWith({ tripId: 't1', accept: false })
   })
 
-  it('shows only the newest of several invites until Show all is clicked', async () => {
+  it('shows only the newest of several invites until the expander opens the rest', async () => {
     usePendingInvites.mockReturnValue({ invites: [tokyo, bali, lisbon] })
     render(<InviteBar />)
-    expect(screen.getByText('Ana invited you to Tokyo Trip as editor')).toBeInTheDocument()
-    expect(screen.queryByText('Ben invited you to Bali as viewer')).not.toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /^accept/i })).toHaveLength(1)
+    expect(screen.getByRole('button', { name: 'Accept invite to Tokyo Trip' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Accept invite to Bali' })).not.toBeInTheDocument()
 
-    const toggle = screen.getByRole('button', { name: 'Show all (3)' })
-    expect(toggle).toHaveAttribute('aria-expanded', 'false')
-    await userEvent.click(toggle)
+    const expander = screen.getByRole('button', { name: 'Show all (3)' })
+    expect(expander).toHaveAttribute('aria-expanded', 'false')
+    await userEvent.click(expander)
 
-    expect(screen.getByText('Ben invited you to Bali as viewer')).toBeInTheDocument()
-    expect(screen.getByText('Cy invited you to Lisbon as editor')).toBeInTheDocument()
+    expect(expander).toHaveAttribute('aria-expanded', 'true')
+    expect(expander).toHaveTextContent('Show less')
     expect(screen.getAllByRole('button', { name: /^accept/i })).toHaveLength(3)
+    expect(screen.getByText('Ben invited you to Bali as viewer')).toBeVisible()
+    expect(screen.getByText('Cy invited you to Lisbon as editor')).toBeVisible()
 
-    await userEvent.click(screen.getByRole('button', { name: 'Show less' }))
-    expect(screen.queryByText('Ben invited you to Bali as viewer')).not.toBeInTheDocument()
+    await userEvent.click(expander)
+    expect(expander).toHaveAttribute('aria-expanded', 'false')
+    expect(screen.getAllByRole('button', { name: /^accept/i })).toHaveLength(1)
+  })
+
+  it('keeps the expander under the last invite instead of inside the first row', async () => {
+    usePendingInvites.mockReturnValue({ invites: [tokyo, bali, lisbon] })
+    render(<InviteBar />)
+    const expander = screen.getByRole('button', { name: 'Show all (3)' })
+    const firstRow = screen.getByText('Ana invited you to Tokyo Trip as editor').closest('li')
+    expect(firstRow).not.toContainElement(expander)
+
+    await userEvent.click(expander)
+    const lastRow = screen.getByText('Cy invited you to Lisbon as editor').closest('li')
+    expect(lastRow.compareDocumentPosition(expander) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(document.getElementById(expander.getAttribute('aria-controls'))).toContainElement(lastRow)
   })
 
   it('responds to an invite from the expanded list', async () => {

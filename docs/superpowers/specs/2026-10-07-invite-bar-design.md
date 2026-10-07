@@ -19,8 +19,9 @@ invite *happened*; it can't say whether the invite is *still pending*.
 - Pending invites move to a **message bar directly under the app header**, on every in-app page.
 - The bar has **no dismiss**: an invite stays up until it is accepted or declined. The header and
   the bar are sticky together, so a pending invite stays in view while scrolling.
-- With **several** invites the bar shows the newest one plus **Show all (N)**, which expands the
-  full list (each row with its own Accept / Decline); **Show less** collapses it again.
+- With **several** invites the bar shows the newest one; an expander at the foot of the bar
+  (**⌄ Show all (N)** / **⌃ Show less**) slides the rest open under it, each row with its own
+  Accept / Decline.
 - The bell dropdown becomes **informational only** — invite notifications still appear there as
   history, without Accept / Decline.
 
@@ -91,14 +92,16 @@ Rendered by `DashboardLayout` inside a sticky wrapper with the header (the heade
 - **No invites** → renders nothing.
 - **Row:** ✉ icon · "**{actor}** invited you to **{trip}** as {role}" · **Accept** · **Decline**
   (accessible names "Accept invite to {trip}" / "Decline invite to {trip}").
-- **Several invites:** the newest row carries **Show all (N)** / **Show less**
-  (`aria-expanded`); expanded, every invite gets a row. The list caps at `min(50vh, 360px)` and
-  scrolls.
+- **Several invites:** the newest invite shows; the others sit in a region that slides open and
+  shut (`grid-template-rows` 0fr ↔ 1fr transition). It stays mounted for the animation and is
+  `inert` + `aria-hidden` while shut. Open, it caps at `min(45vh, 320px)` and scrolls.
+- **Expander:** a chevron + **Show all (N)** / **Show less** (`aria-expanded`, `aria-controls`)
+  under the last visible invite, lined up with the invite text — it is not part of any invite row,
+  so it moves down as the list opens. The chevron flips when open.
 - **While responding:** all buttons are disabled.
 - **On failure:** the error shows under the row it was for — "This invite is no longer
   available." for `no pending invite`, otherwise "Could not update this invite. Please try again."
-- **Narrow screens:** the buttons wrap below the text, indented past the icon. On one line
-  (≥ 640 px) the toggle sits before the buttons so every row's buttons line up.
+- **Narrow screens:** the buttons wrap below the text, indented past the icon.
 
 The bell (`NotificationBell` / `NotificationItem`) drops `useRespondInvite`, the Accept / Decline
 buttons and their error line; `lib/notifications.js` drops the now-unused `actionable` flag.
@@ -111,6 +114,7 @@ buttons and their error line; `lib/notifications.js` drops the now-unused `actio
 src/hooks/usePendingInvites.js (+ test)          new — rpc my_pending_invites
 src/hooks/useRespondInvite.js (+ test)           invalidate ['invites'] on settle (awaited)
 src/components/InviteBar.jsx + .module.css (+ test)  new — the message bar
+src/components/ChevronIcon.jsx                   new — expander chevron
 src/components/DashboardLayout.jsx + .module.css (+ test)  sticky header + InviteBar wrapper
 src/components/NotificationBell.jsx + .module.css (+ test)  informational only
 src/components/NotificationItem.jsx + .module.css (+ test)  no action buttons
@@ -124,8 +128,9 @@ src/lib/notifications.js (+ test)                drop `actionable`
 - **`usePendingInvites`** — calls `my_pending_invites`; empty list before data / on error.
 - **`useRespondInvite`** — invalidates invites + notifications + trips + trip on success; invites
   only on failure; stays pending until the invite refetch resolves.
-- **`InviteBar`** — nothing when empty; single invite has no toggle; Accept / Decline send the trip
-  id; Show all reveals every invite and Show less collapses; buttons disabled while pending;
-  errors render under the matching invite only (stale vs generic copy).
+- **`InviteBar`** — nothing when empty; single invite has no expander; Accept / Decline send the
+  trip id; Show all reveals every invite and Show less hides them again; the expander sits after
+  the last invite, outside the first row; buttons disabled while pending; errors render under the
+  matching invite only (stale vs generic copy).
 - **`NotificationBell` / `NotificationItem`** — invites render as text with no buttons.
 - **`DashboardLayout`** — renders the invite bar.

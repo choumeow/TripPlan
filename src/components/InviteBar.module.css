@@ -1,4 +1,5 @@
 .bar {
+  padding: var(--space-2) var(--space-5);
   background: #fff7ed;
   border-bottom: 1px solid #fed7aa;
 }
@@ -6,9 +7,7 @@
 .list {
   list-style: none;
   margin: 0;
-  padding: var(--space-2) var(--space-5);
-  max-height: min(50vh, 360px);
-  overflow-y: auto;
+  padding: 0;
 }
 
 .row {
@@ -18,7 +17,29 @@
   padding: var(--space-1) 0;
 }
 
-.row + .row {
+/* The other invites slide open and shut: the grid row animates 0fr <-> 1fr and the
+   clip hides whatever doesn't fit yet. */
+.more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur) var(--ease);
+}
+
+.open {
+  grid-template-rows: 1fr;
+}
+
+.clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.moreList {
+  max-height: min(45vh, 320px);
+  overflow-y: auto;
+}
+
+.moreList .row {
   margin-top: var(--space-1);
   padding-top: var(--space-2);
   border-top: 1px solid #fed7aa;
@@ -36,8 +57,8 @@
   font-size: 14px;
 }
 
-/* Text, actions and toggle share one wrapping line; on a narrow screen the buttons
-   drop below the text, still indented past the icon. */
+/* Text and actions share one wrapping line; on a narrow screen the buttons drop below
+   the text, still indented past the icon. */
 .body {
   flex: 1;
   min-width: 0;
@@ -102,9 +123,20 @@
   cursor: default;
 }
 
-.toggle {
-  flex: none;
-  padding: 5px var(--space-1);
+.err {
+  flex-basis: 100%;
+  font-size: 13px;
+  color: var(--c-danger);
+}
+
+/* Sits under the last visible invite (lined up with the invite text), so it moves down
+   as the list opens. */
+.expander {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 2px 0 0 40px;
+  padding: 2px var(--space-1);
   font-size: 13px;
   font-weight: 600;
   color: var(--accent-strong);
@@ -112,18 +144,14 @@
   border: 0;
 }
 
-.toggle:hover {
+.expander:hover {
   text-decoration: underline;
 }
 
-.err {
-  flex-basis: 100%;
-  font-size: 13px;
-  color: var(--c-danger);
+.chevron {
+  transition: transform var(--dur) var(--ease);
 }
 
-/* On one line, put the toggle before the buttons so every row's buttons line up. */
-@media (min-width: 640px) {
-  .actions { order: 1; }
-  .err { order: 2; }
+.expander[aria-expanded='true'] .chevron {
+  transform: rotate(180deg);
 }
