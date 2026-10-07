@@ -1,6 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { NotificationItem } from './NotificationItem'
 
 const received = {
@@ -13,25 +12,20 @@ const accepted = {
 }
 
 describe('NotificationItem', () => {
-  it('renders invite_received text with Accept/Decline that call the handlers', async () => {
-    const onAccept = vi.fn(); const onDecline = vi.fn()
-    render(<NotificationItem notification={received} onAccept={onAccept} onDecline={onDecline} />)
+  it('renders invite_received as text only (no Accept/Decline)', () => {
+    render(<NotificationItem notification={received} />)
     expect(screen.getByText('Ana invited you to Tokyo Trip as editor')).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: /accept/i }))
-    expect(onAccept).toHaveBeenCalledWith(received)
-    await userEvent.click(screen.getByRole('button', { name: /decline/i }))
-    expect(onDecline).toHaveBeenCalledWith(received)
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
 
-  it('renders an informational notification with no action buttons', () => {
-    render(<NotificationItem notification={accepted} onAccept={vi.fn()} onDecline={vi.fn()} />)
+  it('renders an informational notification', () => {
+    render(<NotificationItem notification={accepted} />)
     expect(screen.getByText('Ben accepted your invite to Tokyo Trip')).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /accept/i })).not.toBeInTheDocument()
   })
 
   it('renders nothing for an unknown type', () => {
     const { container } = render(
-      <NotificationItem notification={{ id: 'x', type: 'nope', payload: {} }} onAccept={vi.fn()} onDecline={vi.fn()} />,
+      <NotificationItem notification={{ id: 'x', type: 'nope', payload: {} }} />,
     )
     expect(container).toBeEmptyDOMElement()
   })

@@ -4,11 +4,9 @@ import userEvent from '@testing-library/user-event'
 
 vi.mock('../hooks/useNotifications', () => ({ useNotifications: vi.fn() }))
 vi.mock('../hooks/useMarkNotificationsRead', () => ({ useMarkNotificationsRead: vi.fn() }))
-vi.mock('../hooks/useRespondInvite', () => ({ useRespondInvite: vi.fn() }))
 
 import { useNotifications } from '../hooks/useNotifications'
 import { useMarkNotificationsRead } from '../hooks/useMarkNotificationsRead'
-import { useRespondInvite } from '../hooks/useRespondInvite'
 import { NotificationBell } from './NotificationBell'
 
 const invite = {
@@ -19,7 +17,6 @@ const invite = {
 beforeEach(() => {
   vi.clearAllMocks()
   useMarkNotificationsRead.mockReturnValue({ mutate: vi.fn() })
-  useRespondInvite.mockReturnValue({ mutate: vi.fn(), isPending: false })
 })
 
 describe('NotificationBell', () => {
@@ -39,14 +36,12 @@ describe('NotificationBell', () => {
     expect(screen.getByText('Ana invited you to Tokyo Trip as editor')).toBeInTheDocument()
   })
 
-  it('accepting an invite responds with the payload trip id', async () => {
-    const respond = vi.fn()
-    useRespondInvite.mockReturnValue({ mutate: respond, isPending: false })
+  it('lists an invite for information only (answering happens in the invite bar)', async () => {
     useNotifications.mockReturnValue({ items: [invite], unreadCount: 1 })
     render(<NotificationBell />)
     await userEvent.click(screen.getByRole('button', { name: /notifications/i }))
-    await userEvent.click(screen.getByRole('button', { name: /accept/i }))
-    expect(respond).toHaveBeenCalledWith({ tripId: 't1', accept: true })
+    expect(screen.queryByRole('button', { name: /accept/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /decline/i })).not.toBeInTheDocument()
   })
 
   it('shows an empty state when there are no notifications', async () => {
@@ -54,15 +49,5 @@ describe('NotificationBell', () => {
     render(<NotificationBell />)
     await userEvent.click(screen.getByRole('button', { name: /notifications/i }))
     expect(screen.getByText(/no notifications yet/i)).toBeInTheDocument()
-  })
-
-  it('surfaces a stale-invite error when responding fails', async () => {
-    useRespondInvite.mockReturnValue({
-      mutate: vi.fn(), isPending: false, isError: true, error: { message: 'no pending invite' },
-    })
-    useNotifications.mockReturnValue({ items: [invite], unreadCount: 1 })
-    render(<NotificationBell />)
-    await userEvent.click(screen.getByRole('button', { name: /notifications/i }))
-    expect(screen.getByText(/no longer available/i)).toBeInTheDocument()
   })
 })

@@ -18,14 +18,3 @@
 }
 .body { flex: 1; min-width: 0; }
 .text { margin: 0; font-size: 14px; color: var(--ink); line-height: 1.4; }
-.actions { display: flex; gap: var(--space-2); margin-top: var(--space-2); }
-.accept, .decline {
-  padding: 4px 12px;
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: var(--radius-md);
-  border: 1.5px solid var(--border);
-}
-.accept { background: var(--primary); border-color: var(--primary); color: #fff; }
-.decline { background: transparent; color: var(--ink); }
-.accept:disabled, .decline:disabled { opacity: 0.5; }

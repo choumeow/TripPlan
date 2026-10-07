@@ -2,17 +2,14 @@
 export const NOTIFICATION_TYPES = {
   invite_received: {
     icon: '✉',
-    actionable: true,
     text: (p) => `${p.actor_name} invited you to ${p.trip_name} as ${p.role}`,
   },
   invite_accepted: {
     icon: '✓',
-    actionable: false,
     text: (p) => `${p.actor_name} accepted your invite to ${p.trip_name}`,
   },
   invite_declined: {
     icon: '✕',
-    actionable: false,
     text: (p) => `${p.actor_name} declined your invite to ${p.trip_name}`,
   },
 }

@@ -4,18 +4,11 @@ import { NOTIFICATION_TYPES, notificationMeta, notificationText } from './notifi
 const payload = { actor_name: 'Ana', trip_name: 'Tokyo Trip', role: 'editor' }
 
 describe('notifications config', () => {
-  it('every type has an icon, an actionable flag, and a text builder', () => {
+  it('every type has an icon and a text builder', () => {
     for (const meta of Object.values(NOTIFICATION_TYPES)) {
       expect(typeof meta.icon).toBe('string')
-      expect(typeof meta.actionable).toBe('boolean')
       expect(typeof meta.text).toBe('function')
     }
-  })
-
-  it('only invite_received is actionable', () => {
-    expect(NOTIFICATION_TYPES.invite_received.actionable).toBe(true)
-    expect(NOTIFICATION_TYPES.invite_accepted.actionable).toBe(false)
-    expect(NOTIFICATION_TYPES.invite_declined.actionable).toBe(false)
   })
 
   it('builds readable text from the payload', () => {
